@@ -32,10 +32,10 @@ with zipfile.ZipFile(src_zip, 'r') as src_zip_obj:
     src_zip_obj.extractall(".")
 
 # Create a directory for each student based on the faculty number and extract their homework there
-allFiles = list()
+all_files = list()
 for (root, dirs, files) in os.walk(os.getcwd()):
-    allFiles += [os.path.join(root, file) for file in files]
-for homework_path in allFiles:
+    all_files += [os.path.join(root, file) for file in files]
+for homework_path in all_files:
     homework = os.path.basename(homework_path)
     if zipfile.is_zipfile(homework_path):
         faculty_number = homework.split('_')[2][2:]
