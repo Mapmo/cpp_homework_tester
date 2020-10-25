@@ -74,29 +74,33 @@ for (root, dirs, files) in os.walk(os.getcwd()):
             command = "g++ '" + file_to_compile + "' -o '" + file_to_produce + "'"
             os.system(command)
 
-# Test the student task with a 2 seconds timeout for each test. The final score for each task is stored in the student's directory as N.score file
+# Create a list for each task tests
 tasks_test_dirs = list()
 for task_test_dir in os.listdir(tests_dir):
     tasks_test_dirs.append(os.path.join(tests_dir, task_test_dir))
 
-for task_test_dir in tasks_test_dirs:
-    print(task_test_dir)
-    task = os.path.basename(task_test_dir)
-    for student_dir in os.listdir(os.getcwd()):
-        score = 0
-        os.chdir(student_dir)
+# Test the student task with a 2 seconds timeout for each test. The final scores are stored in .result file
+all_scores_fd = open(".results", "w+")
+for student_dir in glob.glob("*"):
+    student_scores = list()
+    os.chdir(student_dir)
+    for task_test_dir in tasks_test_dirs:
+        task_number = os.path.basename(task_test_dir)
+        task_score = 0
         for task_test in glob.glob(os.path.join(task_test_dir, "*-in")):
             task_solution = task_test.replace("-in", "-out")
             tmpfile = "tmpfile"
-            print("Dir", task_test_dir, "Task", task, "Test", task_test)
-            student_file = os.path.join(".", glob.glob("*_" + task + "_*.exe")[0])
+            list_student_file = glob.glob("*_" + task_number + "_*.exe")
+            if len(list_student_file) == 0:
+                continue
+            student_file = os.path.join(".", list_student_file[0])
             command = "cat " + task_test + " | timeout 2 " + student_file + " > " + tmpfile
             print(command)
             os.system(command)
             if filecmp.cmp(tmpfile, task_solution):
-                score += 1
+                task_score += 1
             os.unlink(tmpfile)
-        score_fd = open(task + ".score", "w+")
-        score_fd.write(str(score) + "\n")
-        score_fd.close()
-        os.chdir("..")
+        student_scores.append(task_score)
+    all_scores_fd.write(student_dir + " " + str(student_scores) + "\n")
+    os.chdir("..")
+all_scores_fd.close()
