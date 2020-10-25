@@ -1,7 +1,5 @@
 #!/bin/env python
 
-# This script is intended to test homeworks written in cpp.
-
 import build_solutions
 import os
 import sys
@@ -17,7 +15,8 @@ if zipfile.is_zipfile(sys.argv[1]):
 elif os.path.isdir(sys.argv[1]):
     os.chdir(sys.argv[1])
 else:
-    print("Usage: ", sys.argv[1], " should be a zipfile containing all the solution or a directory, containing compiled solutions")
+    print("Error: '" + sys.argv[1] + "' not a zipfile or directory")
+    validate_input.print_usage()
     exit(1)
 
 if noexec not in sys.argv:
