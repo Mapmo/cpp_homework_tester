@@ -9,14 +9,10 @@ import zipfile
 
 
 def unzip_homeworks():
+    # Create a new uniq directory where to extract the moodle file that contains all the homeworks
     src_zip = sys.argv[1]
-    tests_dir = sys.argv[2]
     src_zip = os.path.realpath(sys.argv[1])
 
-    if not os.path.isdir(tests_dir):
-        print(tests_dir, " is not a directory")
-
-    # Create a new uniq directory where to extract the moodle file that contains all the homeworks
     src_zip_name = os.path.split(src_zip)[1]
     os.chdir("/tmp")
     new_dir = src_zip_name + str(time.time())
@@ -41,6 +37,7 @@ def create_student_dirs():
             with zipfile.ZipFile(homework, "r") as hw_zip_obj:
                 hw_zip_obj.extractall(".")
             os.unlink(homework)
+
             # This code of block is for students who zipped a directory containing their homeworks
             if len(glob.glob("*.cpp")) == 0:
                 useless_dir = glob.glob("*")[0]
@@ -50,6 +47,7 @@ def create_student_dirs():
                 for student_file in all_student_files:
                     shutil.move(student_file, os.getcwd())
                 os.rmdir(useless_dir)
+
             os.chdir("..")
 
 
