@@ -22,6 +22,18 @@ def unzip_homeworks():
         src_zip_obj.extractall(".")
 
 
+def remove_useless_dir():
+    # This function is for students who zipped a directory containing their homeworks
+    if len(glob.glob("*.cpp")) == 0:
+        useless_dir = glob.glob("*")[0]
+        all_student_files = list()
+        for (student_root, student_dirs, student_files) in os.walk(os.getcwd()):
+            all_student_files += [os.path.join(student_root, student_file) for student_file in student_files]
+        for student_file in all_student_files:
+            shutil.move(student_file, os.getcwd())
+        os.rmdir(useless_dir)
+
+
 def create_student_dirs():
     # Create a directory for each student based on the faculty number and extract their homework there
     all_files = list()
@@ -37,17 +49,7 @@ def create_student_dirs():
             with zipfile.ZipFile(homework, "r") as hw_zip_obj:
                 hw_zip_obj.extractall(".")
             os.unlink(homework)
-
-            # This code of block is for students who zipped a directory containing their homeworks
-            if len(glob.glob("*.cpp")) == 0:
-                useless_dir = glob.glob("*")[0]
-                all_student_files = list()
-                for (student_root, student_dirs, student_files) in os.walk(os.getcwd()):
-                    all_student_files += [os.path.join(student_root, student_file) for student_file in student_files]
-                for student_file in all_student_files:
-                    shutil.move(student_file, os.getcwd())
-                os.rmdir(useless_dir)
-
+            remove_useless_dir()
             os.chdir("..")
 
 
