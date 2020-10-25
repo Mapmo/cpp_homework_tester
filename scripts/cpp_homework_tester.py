@@ -25,14 +25,12 @@ else:
 if not os.path.isdir(tests_dir):
     print(tests_dir, " is not a directory")
 
-# Create a uniq directory for zip extraction
+# Create a new uniq directory where to extract the moodle file that contains all the homeworks
 src_zip_name = os.path.split(src_zip)[1]
 os.chdir("/tmp")
 new_dir = src_zip_name + str(time.time())
 os.mkdir(new_dir)
 os.chdir(new_dir)
-
-
 with zipfile.ZipFile(src_zip, 'r') as src_zip_obj:
     src_zip_obj.extractall(".")
 
