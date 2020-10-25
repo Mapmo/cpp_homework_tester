@@ -5,7 +5,7 @@ import os
 import sys
 import test_homeworks
 import validate_input
-from validate_input import noexec
+from validate_input import notest
 import zipfile
 
 validate_input.main()
@@ -19,5 +19,5 @@ else:
     validate_input.print_usage()
     exit(1)
 
-if noexec not in sys.argv:
+if notest not in sys.argv:
     test_homeworks.main()
