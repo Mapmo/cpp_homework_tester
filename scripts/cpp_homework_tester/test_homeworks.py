@@ -15,7 +15,6 @@ def create_tasks_list(tests_dir):
 
 def test_homeworks(students_to_test, tasks_test_dirs):
     all_scores_fd = open(".results", "w+")
-    print("Tasks to test", students_to_test)
     for student_dir in students_to_test:
         student_scores = list()
         os.chdir(student_dir)
