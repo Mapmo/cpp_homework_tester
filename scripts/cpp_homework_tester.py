@@ -10,8 +10,11 @@ import shutil
 import time
 import zipfile
 
-if len(sys.argv) != 3:
-    print("Usage:", sys.argv[0], "zip_file_all_homeworks tests_directory")
+if len(sys.argv) < 3:
+    print("Usage:", sys.argv[0], "zip_file_all_homeworks tests_directory [ARGS]")
+    print("-noexe - does not run tests, only attempts to compile all files")
+    print("-exeonly - does not compile the solutions just runs the tests")
+    print("-test N - tests only the homework of student N")
     exit(1)
 
 src_zip = sys.argv[1]
