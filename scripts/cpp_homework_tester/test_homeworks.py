@@ -40,11 +40,11 @@ def test_homeworks(tests_dir, tasks_test_dirs):
     all_scores_fd.close()
 
 
-def main():
-    tests_dir = sys.argv[1]
+def main(tests_dir):
     tasks_test_dirs = create_tasks_list(tests_dir)
     test_homeworks(tests_dir, tasks_test_dirs)
 
 
 if __name__ == "__main__":
-    main()
+    tests_dir = sys.argv[1]
+    main(tests_dir)
