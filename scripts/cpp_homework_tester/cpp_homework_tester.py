@@ -10,11 +10,15 @@ import test_homeworks
 import time
 import zipfile
 
+noexe = "--noexe"
+exeonly = "--exeonly"
+exeonlyfor = "--exeonlyfor"
+
 if len(sys.argv) < 3:
     print("Usage:", sys.argv[0], "zip_file_all_homeworks tests_directory [ARGS]")
-    print("-noexe - does not run tests, only attempts to compile all files")
-    print("-exeonly - does not compile the solutions just runs the tests")
-    print("-test N - tests only the homework of student N")
+    print(noexe, "- does not run tests, only attempts to compile all files")
+    print(exeonly, "- does not compile the solutions just runs the tests")
+    print(exeonlyfor, "N - tests only the homework of student N")
     exit(1)
 
 src_zip = sys.argv[1]
@@ -75,4 +79,5 @@ for (root, dirs, files) in os.walk(os.getcwd()):
             command = "g++ '" + file_to_compile + "' -o '" + file_to_produce + "'"
             os.system(command)
 
-test_homeworks.main(tests_dir)
+if noexe not in sys.argv:
+    test_homeworks.main(tests_dir)
