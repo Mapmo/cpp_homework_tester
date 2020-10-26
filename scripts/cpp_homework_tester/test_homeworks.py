@@ -29,7 +29,7 @@ def test_homeworks(students_to_test, tasks_test_dirs):
                 task_solution = task_test.replace("-in", "-out")
                 tmpfile = "tmpfile"
                 student_file = os.path.join(".", list_student_file[0])
-                command = "cat " + task_test + " | timeout 2 " + student_file + " > " + tmpfile
+                command = "echo $(cat " + task_test + " | timeout 2 " + student_file + ") > " + tmpfile
                 print(command)
                 os.system(command)
                 if filecmp.cmp(tmpfile, task_solution):
