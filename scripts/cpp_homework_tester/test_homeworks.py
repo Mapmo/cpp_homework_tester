@@ -36,7 +36,8 @@ def test_homeworks(students_to_test, tasks_test_dirs):
                     task_score += 1
                 os.unlink(tmpfile)
             student_scores.append(task_score)
-        all_scores_fd.write(student_dir + " " + str(student_scores) + "\n")
+        student_scores_str = " ".join(str(item) for item in student_scores)
+        all_scores_fd.write(student_dir + " " + student_scores_str + "\n")
         os.chdir("..")
     all_scores_fd.close()
 
