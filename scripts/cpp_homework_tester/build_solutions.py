@@ -30,7 +30,12 @@ def remove_useless_dir():
         for (student_root, student_dirs, student_files) in os.walk(os.getcwd()):
             all_student_files += [os.path.join(student_root, student_file) for student_file in student_files]
         for student_file in all_student_files:
-            shutil.move(student_file, os.getcwd())
+            try:
+                shutil.move(student_file, os.getcwd())
+            except shutil.Error:
+                print("Issue extracting the homework of", os.getcwd())
+                shutil.rmtree(os.getcwd())
+                return
         os.rmdir(useless_dir)
 
 
