@@ -41,7 +41,7 @@ def remove_useless_dir():
             try:
                 shutil.move(student_file, os.getcwd())
             except shutil.Error:
-                print("Issue extracting the homework of", os.getcwd())
+                print("Faculty number", os.path.basename(os.getcwd(), "having no cpp files after unzip"))
                 shutil.rmtree(os.getcwd())
                 return
         os.rmdir(useless_dir)
