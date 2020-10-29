@@ -22,6 +22,14 @@ def unzip_homeworks():
         src_zip_obj.extractall(".")
 
 
+def remove_mac_dir():
+    # This function is used for students who use mac and submit __MAC direcotry for some reason
+    mac_dirs = glob.glob("*MAC*")
+    if len(mac_dirs) > 0:
+        for dir in mac_dirs:
+            shutil.rmtree(dir)
+
+
 def remove_useless_dir():
     # This function is for students who zipped a directory containing their homeworks
     if len(glob.glob("*.cpp")) == 0:
@@ -52,8 +60,15 @@ def create_student_dirs():
             shutil.move(homework_path, faculty_number)
             os.chdir(faculty_number)
             with zipfile.ZipFile(homework, "r") as hw_zip_obj:
-                hw_zip_obj.extractall(".")
+                try:
+                    hw_zip_obj.extractall(".")
+                except FileExistsError:
+                    print("Faculty number", faculty_number, " tried to recreate dir, probably zip in zip submitted. Won't be tested!")
+                    os.chdir("..")
+                    shutil.rmtree(faculty_number)
+                    continue
             os.unlink(homework)
+            remove_mac_dir()
             remove_useless_dir()
             os.chdir("..")
 
