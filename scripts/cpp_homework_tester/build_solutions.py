@@ -90,7 +90,10 @@ def add_all_libs(original_file):
         return 1
     new_file = original_file + "~"
     new_file_d = open(new_file, "w+")
-    new_file_d.write("#include <bits/stdc++.h>\n\n" + original_content.strip())
+    libs_to_add = ["cmath", "climits"]
+    for lib in libs_to_add:
+        new_file_d.write("#include <" + lib + ">\n")
+    new_file_d.write(original_content.strip())
     original_file_d.close()
     new_file_d.close()
     shutil.move(new_file, original_file)
