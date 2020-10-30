@@ -90,7 +90,7 @@ def add_all_libs(original_file):
         return 1
     new_file = original_file + "~"
     new_file_d = open(new_file, "w+")
-    libs_to_add = ["cmath", "climits"]
+    libs_to_add = ["cmath", "climits", "limits"]
     for lib in libs_to_add:
         new_file_d.write("#include <" + lib + ">\n")
     new_file_d.write(original_content.strip())
