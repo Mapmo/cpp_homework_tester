@@ -71,6 +71,9 @@ def create_student_dirs():
             remove_mac_dir()
             remove_useless_dir()
             os.chdir("..")
+        else:
+            print("Not a zipfile found while creating the user directories and will be deleted:", homework_path)
+            os.unlink(homework_path)
 
 
 def remove_moodle_dirs():
