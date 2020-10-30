@@ -84,7 +84,10 @@ def remove_moodle_dirs():
 def add_all_libs(original_file):
     # The following function is needed for compiling VS C++ code, since the libraries in VS contain more functions that g++
     original_file_d = open(original_file, encoding='utf-8-sig')  # Using utf-8-sig since some code is written on windows and it may contain characters like <feff>
-    original_content = original_file_d.read()
+    try:
+        original_content = original_file_d.read()
+    except UnicodeDecodeError:
+        return 1
     new_file = original_file + "~"
     new_file_d = open(new_file, "w+")
     new_file_d.write("#include <bits/stdc++.h>\n\n" + original_content.strip())
@@ -99,7 +102,9 @@ def compile_homeworks():
         for file in files:
             if file.endswith(".cpp"):
                 file_to_compile = os.path.join(root, file)
-                add_all_libs(file_to_compile)
+                if add_all_libs(file_to_compile) == 1:
+                    print("File", file_to_compile, "failed to add all libs and won't be compiled")
+                    continue
                 file_to_produce = os.path.join(root, file.replace(".cpp", ".exe"))
                 command = "g++ '" + file_to_compile + "' -o '" + file_to_produce + "'"
                 print(command)
