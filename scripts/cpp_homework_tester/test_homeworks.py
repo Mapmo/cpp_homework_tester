@@ -23,8 +23,8 @@ def append_student_result(data, student_dir, student_scores):
 
 
 def test_homeworks(students_to_test, tasks_test_dirs):
-    data = {}
-    data["results"] = []
+    data = dict()
+    data["results"] = list()
     for student_dir in students_to_test:
         student_scores = list()
         os.chdir(student_dir)
