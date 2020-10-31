@@ -14,6 +14,34 @@ def create_tasks_list(tests_dir):
     return tasks_test_dirs
 
 
+def execute_test(task_test, list_student_task_solution, task_score):
+    test = dict()
+    test_solution = task_test.replace("-in", "-out")
+    tmpfile = "tmpfile"
+
+    student_task_solution = os.path.join(".", list_student_task_solution)
+    command = "echo $(cat " + task_test + " | timeout 2 " + student_task_solution + " | tr [a-z] [A-Z]) > " + tmpfile
+    print(command)
+    os.system(command)
+
+    test_solution_fd = open(test_solution)
+    tmpfile_fd = open(tmpfile)
+    test["id"] = task_test[:-3]
+    test["expect_result"] = test_solution_fd.read()
+    test["actual_result"] = tmpfile_fd.read()
+    test_solution_fd.close()
+    tmpfile_fd.close()
+
+    if filecmp.cmp(test_solution, tmpfile):
+        task_score += 1
+        test["match"] = 1
+    else:
+        test["match"] = 0
+
+    os.unlink(tmpfile)
+    return test
+
+
 def append_student_result(data, student_dir, student_scores, student_tasks):
     data["results"].append({
         "faculty_number": student_dir,
@@ -40,26 +68,7 @@ def test_homeworks(students_to_test, tasks_test_dirs):
             student_task["id"] = task_number
             student_task["tests"] = list()
             for task_test in glob.glob(os.path.join(task_test_dir, "*-in")):
-                test = dict()
-                test_solution = task_test.replace("-in", "-out")
-                tmpfile = "tmpfile"
-                student_file = os.path.join(".", list_student_task_solution[0])
-                command = "echo $(cat " + task_test + " | timeout 2 " + student_file + " | tr [a-z] [A-Z]) > " + tmpfile
-                print(command)
-                os.system(command)
-                test["id"] = task_test[:-3]
-                test_solution_fd = open(test_solution)
-                test["expect_result"] = test_solution_fd.read()
-                test_solution_fd.close()
-                tmpfile_fd = open(tmpfile)
-                test["actual_result"] = tmpfile_fd.read()
-                tmpfile_fd.close()
-                if filecmp.cmp(test_solution, tmpfile):
-                    task_score += 1
-                    test["match"] = 1
-                else:
-                    test["match"] = 0
-                os.unlink(tmpfile)
+                test = execute_test(task_test, list_student_task_solution[0], task_score)
                 student_task["tests"].append(test)
             student_scores.append(task_score)
             student_tasks.append(student_task)
