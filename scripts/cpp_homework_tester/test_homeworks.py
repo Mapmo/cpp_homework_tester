@@ -14,11 +14,11 @@ def create_tasks_list(tests_dir):
     return tasks_test_dirs
 
 
-def append_student_result(data, student_dir, student_scores):
+def append_student_result(data, student_dir, student_scores, student_tasks):
     data["results"].append({
         "faculty_number": student_dir,
         "score": student_scores,
-        "tasks": "TBD"
+        "tasks": student_tasks
     })
 
 
@@ -27,13 +27,19 @@ def test_homeworks(students_to_test, tasks_test_dirs):
     data["results"] = list()
     for student_dir in students_to_test:
         student_scores = list()
+        student_tasks = list()
         os.chdir(student_dir)
         for task_test_dir in tasks_test_dirs:
-            task_number = os.path.basename(task_test_dir)
             task_score = 0
+            task_number = os.path.basename(task_test_dir)
+            student_task = dict()
+            student_task["id"] = task_number
+            student_task["tests"] = list()
             for task_test in glob.glob(os.path.join(task_test_dir, "*-in")):
+                test = dict()
                 list_student_file = glob.glob("*_" + task_number + "_*.exe")
                 if len(list_student_file) == 0:
+                    test = "File not found"
                     break
                 task_solution = task_test.replace("-in", "-out")
                 tmpfile = "tmpfile"
@@ -41,11 +47,23 @@ def test_homeworks(students_to_test, tasks_test_dirs):
                 command = "echo $(cat " + task_test + " | timeout 2 " + student_file + " | tr [a-z] [A-Z]) > " + tmpfile
                 print(command)
                 os.system(command)
-                if filecmp.cmp(tmpfile, task_solution):
+                test["id"] = task_test[:-3]
+                task_solution_fd = open(task_solution)
+                test["expect_result"] = task_solution_fd.read()
+                task_solution_fd.close()
+                tmpfile_fd = open(tmpfile)
+                test["actual_result"] = tmpfile_fd.read()
+                tmpfile_fd.close()
+                if filecmp.cmp(task_solution, tmpfile):
                     task_score += 1
+                    test["match"] = 1
+                else:
+                    test["match"] = 0
                 os.unlink(tmpfile)
+                student_task["tests"].append(test)
             student_scores.append(task_score)
-        append_student_result(data, student_dir, student_scores)
+            student_tasks.append(student_task)
+        append_student_result(data, student_dir, student_scores, student_tasks)
         os.chdir("..")
     results_file = open(".results.json", "w")
     json.dump(data, results_file)
