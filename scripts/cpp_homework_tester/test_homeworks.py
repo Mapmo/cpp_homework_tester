@@ -14,6 +14,14 @@ def create_tasks_list(tests_dir):
     return tasks_test_dirs
 
 
+def append_student_result(data, student_dir, student_scores):
+    data["results"].append({
+        "faculty_number": student_dir,
+        "score": student_scores,
+        "tasks": "TBD"
+    })
+
+
 def test_homeworks(students_to_test, tasks_test_dirs):
     data = {}
     data["results"] = []
@@ -37,11 +45,7 @@ def test_homeworks(students_to_test, tasks_test_dirs):
                     task_score += 1
                 os.unlink(tmpfile)
             student_scores.append(task_score)
-        data["results"].append({
-            "faculty_number": student_dir,
-            "score": student_scores,
-            "tasks": "TBD"
-        })
+        append_student_result(data, student_dir, student_scores)
         os.chdir("..")
     results_file = open(".results.json", "w")
     json.dump(data, results_file)
