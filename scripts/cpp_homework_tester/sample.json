@@ -1,0 +1,97 @@
+{
+    "faculty_number": 62197,
+    "score": [
+        1,
+        1,
+        1,
+        1,
+        0
+    ],
+    "tasks": [
+        {
+            "id": 1,
+            "tests": [
+                {
+                    "id": 1,
+                    "expected_result": "1234",
+                    "actual_result": "1234",
+                    "match": 1
+                },
+                {
+                    "id": 2,
+                    "expected_result": "1234",
+                    "actual_result": "1233",
+                    "match": 0
+                }
+            ]
+        },
+        {
+            "id": 2,
+            "tests": [
+                {
+                    "id": 1,
+                    "expected_result": "123",
+                    "actual_result": "123",
+                    "match": 1
+                },
+                {
+                    "id": 2,
+                    "expected_result": "5",
+                    "actual_result": "1233",
+                    "match": 0
+                }
+            ]
+        },
+        {
+            "id": 3,
+            "tests": [
+                {
+                    "id": 1,
+                    "expected_result": "1234",
+                    "actual_result": "1234",
+                    "match": 1
+                },
+                {
+                    "id": 2,
+                    "expected_result": "1234",
+                    "actual_result": "1233",
+                    "match": 0
+                }
+            ]
+        },
+        {
+            "id": 4,
+            "tests": [
+                {
+                    "id": 1,
+                    "expected_result": "1234",
+                    "actual_result": "1234",
+                    "match": 1
+                },
+                {
+                    "id": 2,
+                    "expected_result": "1234",
+                    "actual_result": "1233",
+                    "match": 0
+                }
+            ]
+        },
+        {
+            "id": 5,
+            "tests": [
+                {
+                    "id": 1,
+                    "expected_result": "1234",
+                    "actual_result": "124",
+                    "match": 0
+                },
+                {
+                    "id": 2,
+                    "expected_result": "1234",
+                    "actual_result": "1233",
+                    "match": 0
+                }
+            ]
+        }
+    ]
+}
