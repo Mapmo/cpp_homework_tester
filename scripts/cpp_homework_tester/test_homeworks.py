@@ -41,20 +41,20 @@ def test_homeworks(students_to_test, tasks_test_dirs):
                 if len(list_student_file) == 0:
                     test = "File not found"
                     break
-                task_solution = task_test.replace("-in", "-out")
+                test_solution = task_test.replace("-in", "-out")
                 tmpfile = "tmpfile"
                 student_file = os.path.join(".", list_student_file[0])
                 command = "echo $(cat " + task_test + " | timeout 2 " + student_file + " | tr [a-z] [A-Z]) > " + tmpfile
                 print(command)
                 os.system(command)
                 test["id"] = task_test[:-3]
-                task_solution_fd = open(task_solution)
-                test["expect_result"] = task_solution_fd.read()
-                task_solution_fd.close()
+                test_solution_fd = open(test_solution)
+                test["expect_result"] = test_solution_fd.read()
+                test_solution_fd.close()
                 tmpfile_fd = open(tmpfile)
                 test["actual_result"] = tmpfile_fd.read()
                 tmpfile_fd.close()
-                if filecmp.cmp(task_solution, tmpfile):
+                if filecmp.cmp(test_solution, tmpfile):
                     task_score += 1
                     test["match"] = 1
                 else:
