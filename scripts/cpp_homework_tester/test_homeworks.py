@@ -2,6 +2,7 @@
 
 import filecmp
 import glob
+import json
 import os
 import sys
 
@@ -14,7 +15,8 @@ def create_tasks_list(tests_dir):
 
 
 def test_homeworks(students_to_test, tasks_test_dirs):
-    all_scores_fd = open(".results", "w+")
+    data = {}
+    data["results"] = []
     for student_dir in students_to_test:
         student_scores = list()
         os.chdir(student_dir)
@@ -25,7 +27,6 @@ def test_homeworks(students_to_test, tasks_test_dirs):
                 list_student_file = glob.glob("*_" + task_number + "_*.exe")
                 if len(list_student_file) == 0:
                     break
-
                 task_solution = task_test.replace("-in", "-out")
                 tmpfile = "tmpfile"
                 student_file = os.path.join(".", list_student_file[0])
@@ -36,10 +37,14 @@ def test_homeworks(students_to_test, tasks_test_dirs):
                     task_score += 1
                 os.unlink(tmpfile)
             student_scores.append(task_score)
-        student_scores_str = " ".join(str(item) for item in student_scores)
-        all_scores_fd.write(student_dir + " " + student_scores_str + "\n")
+        data["results"].append({
+            "faculty_number": student_dir,
+            "score": student_scores,
+            "tasks": "TBD"
+        })
         os.chdir("..")
-    all_scores_fd.close()
+    results_file = open(".results.json", "w")
+    json.dump(data, results_file)
 
 
 def main():
