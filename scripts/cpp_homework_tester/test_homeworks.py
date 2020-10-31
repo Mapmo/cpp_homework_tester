@@ -26,7 +26,7 @@ def execute_test(task_test, list_student_task_solution, task_score):
 
     test_solution_fd = open(test_solution)
     tmpfile_fd = open(tmpfile)
-    test["id"] = task_test[:-3]
+    test["id"] = os.path.basename(task_test)[:-3]
     test["expect_result"] = test_solution_fd.read()
     test["actual_result"] = tmpfile_fd.read()
     test_solution_fd.close()
