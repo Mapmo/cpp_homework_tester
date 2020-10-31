@@ -30,10 +30,10 @@ def remove_mac_dir():
             shutil.rmtree(dir)
 
 
-def remove_useless_dir():
+def remove_zipped_dir():
     # This function is for students who zipped a directory containing their homeworks
     if len(glob.glob("*.cpp")) == 0:
-        useless_dir = glob.glob("*")[0]
+        zipped_dir = glob.glob("*")[0]
         all_student_files = list()
         for (student_root, student_dirs, student_files) in os.walk(os.getcwd()):
             all_student_files += [os.path.join(student_root, student_file) for student_file in student_files]
@@ -44,7 +44,7 @@ def remove_useless_dir():
                 print("Faculty number", os.path.basename(os.getcwd()), "having no cpp files after unzip")
                 shutil.rmtree(os.getcwd())
                 return
-        os.rmdir(useless_dir)
+        os.rmdir(zipped_dir)
 
 
 def create_student_dirs():
@@ -69,7 +69,7 @@ def create_student_dirs():
                     continue
             os.unlink(homework)
             remove_mac_dir()
-            remove_useless_dir()
+            remove_zipped_dir()
             os.chdir("..")
         else:
             print("Not a zipfile found while creating the user directories and will be deleted:", homework_path)
