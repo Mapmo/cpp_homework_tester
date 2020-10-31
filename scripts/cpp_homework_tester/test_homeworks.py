@@ -30,20 +30,20 @@ def test_homeworks(students_to_test, tasks_test_dirs):
         student_tasks = list()
         os.chdir(student_dir)
         for task_test_dir in tasks_test_dirs:
-            task_score = 0
             task_number = os.path.basename(task_test_dir)
+            list_student_task_solution = glob.glob("*_" + task_number + "_*.exe")
+            if len(list_student_task_solution) == 0:
+                test = "Compiled solution not found"
+                break
+            task_score = 0
             student_task = dict()
             student_task["id"] = task_number
             student_task["tests"] = list()
             for task_test in glob.glob(os.path.join(task_test_dir, "*-in")):
                 test = dict()
-                list_student_file = glob.glob("*_" + task_number + "_*.exe")
-                if len(list_student_file) == 0:
-                    test = "File not found"
-                    break
                 test_solution = task_test.replace("-in", "-out")
                 tmpfile = "tmpfile"
-                student_file = os.path.join(".", list_student_file[0])
+                student_file = os.path.join(".", list_student_task_solution[0])
                 command = "echo $(cat " + task_test + " | timeout 2 " + student_file + " | tr [a-z] [A-Z]) > " + tmpfile
                 print(command)
                 os.system(command)
