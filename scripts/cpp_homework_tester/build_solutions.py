@@ -97,13 +97,21 @@ def remove_moodle_dirs():
         os.rmdir(moodle_dir)
 
 
-def add_all_libs(original_file):
-    # The following function is needed for compiling VS C++ code, since the libraries in VS contain more functions that g++
-    original_file_d = open(original_file, encoding='utf-8-sig')  # Using utf-8-sig since some code is written on windows and it may contain characters like <feff>
+def check_for_system_calls(file_to_compile):
     try:
-        original_content = original_file_d.read()
+        file_to_compile_fd = open(file_to_compile, encoding="utf-8-sig")  # Using utf-8-sig since some code is written on windows and it may contain characters like <feff>
+        for line in file_to_compile_fd:
+            if re.search("system\(", line):
+                return 2
     except UnicodeDecodeError:
         return 1
+    return 0
+
+
+def add_all_libs(original_file):
+    # The following function is needed for compiling VS C++ code, since the libraries in VS contain more functions that g++
+    original_file_d = open(original_file, encoding="utf-8-sig")  # Using utf-8-sig since some code is written on windows and it may contain characters like <feff>
+    original_content = original_file_d.read()
     new_file = original_file + "~"
     new_file_d = open(new_file, "w+")
     libs_to_add = ["cmath", "climits", "limits"]
@@ -121,9 +129,14 @@ def compile_homeworks():
         for file in files:
             if file.endswith(".cpp"):
                 file_to_compile = os.path.join(root, file)
-                if add_all_libs(file_to_compile) == 1:
-                    print("File", file_to_compile, "failed to add all libs and won't be compiled")
+                invalid = check_for_system_calls(file_to_compile)
+                if invalid > 0:
+                    if invalid == 1:
+                        print("File", file_to_compile, "cannot be opened for reading in utf-8-signed and won't be compiled")
+                    else:
+                        print("File", file_to_compile, "contails system() calls and won't be compiled")
                     continue
+                add_all_libs(file_to_compile)
                 file_to_produce = os.path.join(root, file.replace(".cpp", ".exe"))
                 command = "g++ '" + file_to_compile + "' -o '" + file_to_produce + "' 2> /dev/null || exit 1"
                 print(command)
