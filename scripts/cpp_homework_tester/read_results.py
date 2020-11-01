@@ -21,7 +21,7 @@ def parse_json_file(json_file):
 
 
 argc = len(sys.argv)
-if argc < 2 or argc > 4:
+if argc < 2 or argc > 5:
     print("Usage:", sys.argv[0], "JSON_FILE FN TASK_ID TEST_ID")
     exit(1)
 
@@ -60,3 +60,16 @@ if not task_matched:
 
 if argc == 4:
     print(json.dumps(student_task, indent=4))
+
+test_id = sys.argv[4]
+test_matched = False
+for student_test in student_task["tests"]:
+    if student_test["id"] == test_id:
+        test_matched = True
+        break
+
+if not test_matched:
+    print("No test with id", test_id, "found in the student's tasks")
+    exit(4)
+
+print(json.dumps(student_test, indent=4))
