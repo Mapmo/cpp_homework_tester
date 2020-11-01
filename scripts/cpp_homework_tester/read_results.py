@@ -32,13 +32,10 @@ if argc == 2:
     print(json.dumps(results, indent=4))
     exit(0)
 
-json_file_dir = os.path.dirname(json_file)
 faculty_number = sys.argv[2]
-
 student_matched = False
-for student in results:
-    if student["faculty_number"] == faculty_number:
-        student_result = student
+for student_result in results:
+    if student_result["faculty_number"] == faculty_number:
         student_matched = True
         break
 
@@ -47,4 +44,19 @@ if not student_matched:
     exit(2)
 
 if argc == 3:
-    print(json.dumps(student, indent=4))
+    print(json.dumps(student_result, indent=4))
+    exit(0)
+
+task_id = sys.argv[3]
+task_matched = False
+for student_task in student_result["tasks"]:
+    if student_task["id"] == task_id:
+        task_matched = True
+        break
+
+if not task_matched:
+    print("No task with id", task_id, "found in the student's results")
+    exit(3)
+
+if argc == 4:
+    print(json.dumps(student_task, indent=4))
