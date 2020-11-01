@@ -22,11 +22,17 @@ def unzip_homeworks():
         src_zip_obj.extractall(".")
 
 
-def extract_faculty_number(homework):
+def extract_faculty_number(homework_path, homework):
     try:
-        return homework.split('_')[2][2:]
+        faculty_number = homework.split('_')[2][2:]
+        if faculty_number.isnumeric():
+            return faculty_number
+        else:
+            print("Failed to extract a numeric faculty number from", homework_path)
     except IndexError:
-        return -1
+        print("Failed to extract faculty number from", homework_path)
+    os.unlink(homework_path)
+    return -1
 
 
 def remove_mac_dir():
@@ -62,10 +68,8 @@ def create_student_dirs():
     for homework_path in all_files:
         homework = os.path.basename(homework_path)
         if zipfile.is_zipfile(homework_path):
-            faculty_number = extract_faculty_number(homework)
+            faculty_number = extract_faculty_number(homework_path, homework)
             if faculty_number == -1:
-                print("Failed to extract faculty number from", homework_path)
-                os.unlink(homework_path)
                 continue
             os.mkdir(faculty_number)
             shutil.move(homework_path, faculty_number)
