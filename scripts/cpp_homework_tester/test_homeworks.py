@@ -40,7 +40,7 @@ def execute_test(task_test, list_student_task_solution):
 
 
 def append_student_result(data, student_dir, student_scores, student_tasks):
-    data["results"].append({
+    data.append({
         "faculty_number": student_dir,
         "score": student_scores,
         "tasks": student_tasks
@@ -48,8 +48,7 @@ def append_student_result(data, student_dir, student_scores, student_tasks):
 
 
 def test_homeworks(students_to_test, tasks_test_dirs):
-    data = dict()
-    data["results"] = list()
+    data = list()
     for student_dir in students_to_test:
         student_scores = list()
         student_tasks = list()
