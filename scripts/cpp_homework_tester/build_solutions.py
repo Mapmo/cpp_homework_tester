@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import glob
+import re
 import shutil
 import sys
 import time
@@ -24,7 +25,7 @@ def unzip_homeworks():
 
 def extract_faculty_number(homework_path, homework):
     try:
-        faculty_number = homework.split('_')[2][2:]
+        faculty_number = re.findall("\d+", homework.split('_')[2])[0]
         if faculty_number.isnumeric():
             return faculty_number
         else:
