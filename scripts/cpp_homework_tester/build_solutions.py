@@ -4,7 +4,6 @@ import glob
 import re
 import shutil
 import sys
-import time
 import os
 import zipfile
 
@@ -16,7 +15,7 @@ def unzip_homeworks():
 
     src_zip_name = os.path.split(src_zip)[1]
     os.chdir("/tmp")
-    new_dir = src_zip_name + str(time.time())
+    new_dir = src_zip_name[:-4]
     os.mkdir(new_dir)
     os.chdir(new_dir)
     with zipfile.ZipFile(src_zip, 'r') as src_zip_obj:
