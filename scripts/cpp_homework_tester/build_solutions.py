@@ -43,19 +43,24 @@ def remove_mac_dir():
             shutil.rmtree(dir)
 
 
+def move_student_homework(student_homework):
+    try:
+        shutil.move(student_homework, os.getcwd())
+    except shutil.Error:
+        print("Faculty number", os.path.basename(os.getcwd()), "having no cpp files after unzip")
+        shutil.rmtree(os.getcwd())
+        return -1
+
+
 def remove_zipped_dir():
     # This function is for students who zipped a directory containing their homeworks
     if len(glob.glob("*.cpp")) == 0:
         zipped_dir = glob.glob("*")[0]
-        all_student_files = list()
-        for (student_root, student_dirs, student_files) in os.walk(os.getcwd()):
-            all_student_files += [os.path.join(student_root, student_file) for student_file in student_files]
-        for student_file in all_student_files:
-            try:
-                shutil.move(student_file, os.getcwd())
-            except shutil.Error:
-                print("Faculty number", os.path.basename(os.getcwd()), "having no cpp files after unzip")
-                shutil.rmtree(os.getcwd())
+        all_student_homeworks = list()
+        for (student_root, student_dirs, student_homeworks) in os.walk(os.getcwd()):
+            all_student_homeworks += [os.path.join(student_root, student_homework) for student_homework in student_homeworks]
+        for student_homework in all_student_homeworks:
+            if move_student_homework(student_homework) == -1:
                 return
         os.rmdir(zipped_dir)
 
