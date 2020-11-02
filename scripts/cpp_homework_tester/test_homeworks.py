@@ -16,26 +16,26 @@ def create_tasks_list(tests_dir):
 
 
 def execute_test(task_test, list_student_task_solution):
-    test_solution = task_test.replace("-in", "-out")
-    tmpfile = "tmpfile"
+    expected_test_output = task_test.replace("-in", "-out")
+    student_test_output = "/tmp/.tmpfile"
     student_task_solution = re.escape(os.path.join(".", list_student_task_solution))
 
-    command = "echo $(cat " + task_test + " | timeout 2 " + student_task_solution + " | tr [a-z] [A-Z]) > " + tmpfile
+    command = "echo $(cat " + task_test + " | timeout 2 " + student_task_solution + " | tr [a-z] [A-Z]) > " + student_test_output
     print(command)
     os.system(command)
 
-    test_solution_fd = open(test_solution)
-    tmpfile_fd = open(tmpfile)
+    expected_test_output_fd = open(expected_test_output)
+    student_test_output_fd = open(student_test_output)
 
     test = dict()
     test["id"] = os.path.basename(task_test)[:-3]
-    test["expect_result"] = test_solution_fd.read()
-    test["actual_result"] = tmpfile_fd.read()
-    test["match"] = filecmp.cmp(test_solution, tmpfile)
+    test["expect_result"] = expected_test_output_fd.read()
+    test["actual_result"] = student_test_output_fd.read()
+    test["match"] = filecmp.cmp(expected_test_output, student_test_output)
 
-    test_solution_fd.close()
-    tmpfile_fd.close()
-    os.unlink(tmpfile)
+    expected_test_output_fd.close()
+    student_test_output_fd.close()
+    os.unlink(student_test_output)
 
     return test
 
@@ -63,7 +63,7 @@ def test_homeworks(students_to_test, tasks_test_dirs):
         for task_test_dir in tasks_test_dirs:
             task_number = os.path.basename(task_test_dir)
             list_student_task_solution = glob.glob("*_" + task_number + "_*.exe")
-            task_score = 0
+            student_task_score = 0
             student_task = dict()
             student_task["id"] = task_number
             student_task["tests"] = list()
@@ -74,8 +74,8 @@ def test_homeworks(students_to_test, tasks_test_dirs):
                 for task_test in glob.glob(os.path.join(task_test_dir, "*-in")):
                     test = execute_test(task_test, list_student_task_solution[0])
                     student_task["tests"].append(test)
-                    task_score += test["match"]
-            student_scores.append(task_score)
+                    student_task_score += test["match"]
+            student_scores.append(student_task_score)
             student_tasks.append(student_task)
         append_student_result(data, student_dir, student_scores, student_tasks)
         os.chdir("..")
