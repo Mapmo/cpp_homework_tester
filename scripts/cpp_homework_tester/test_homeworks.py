@@ -74,8 +74,7 @@ def test_homeworks(students_to_test, tasks_test_dirs):
                 for task_test in glob.glob(os.path.join(task_test_dir, "*-in")):
                     test = execute_test(task_test, list_student_task_solution[0])
                     student_task["tests"].append(test)
-                    if test["match"]:
-                        task_score += 1
+                    task_score += test["match"]
             student_scores.append(task_score)
             student_tasks.append(student_task)
         append_student_result(data, student_dir, student_scores, student_tasks)
