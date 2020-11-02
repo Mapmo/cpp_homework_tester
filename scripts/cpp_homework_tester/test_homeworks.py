@@ -48,6 +48,12 @@ def append_student_result(data, student_dir, student_scores, student_tasks):
     })
 
 
+def dump_results_to_file(data):
+    results_file_fd = open(".results.json", "w")
+    json.dump(data, results_file_fd)
+    results_file_fd.close()
+
+
 def test_homeworks(students_to_test, tasks_test_dirs):
     data = list()
     for student_dir in students_to_test:
@@ -74,8 +80,7 @@ def test_homeworks(students_to_test, tasks_test_dirs):
             student_tasks.append(student_task)
         append_student_result(data, student_dir, student_scores, student_tasks)
         os.chdir("..")
-    results_file = open(".results.json", "w")
-    json.dump(data, results_file)
+    dump_results_to_file(data)
 
 
 def main():
