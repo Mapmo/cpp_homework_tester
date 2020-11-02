@@ -4,6 +4,7 @@ import filecmp
 import glob
 import json
 import os
+import re
 import sys
 
 
@@ -17,7 +18,7 @@ def create_tasks_list(tests_dir):
 def execute_test(task_test, list_student_task_solution):
     test_solution = task_test.replace("-in", "-out")
     tmpfile = "tmpfile"
-    student_task_solution = os.path.join(".", list_student_task_solution)
+    student_task_solution = re.escape(os.path.join(".", list_student_task_solution))
 
     command = "echo $(cat " + task_test + " | timeout 2 " + student_task_solution + " | tr [a-z] [A-Z]) > " + tmpfile
     print(command)
@@ -56,18 +57,19 @@ def test_homeworks(students_to_test, tasks_test_dirs):
         for task_test_dir in tasks_test_dirs:
             task_number = os.path.basename(task_test_dir)
             list_student_task_solution = glob.glob("*_" + task_number + "_*.exe")
-            if len(list_student_task_solution) == 0:
-                test = "Compiled solution not found"
-                break
             task_score = 0
             student_task = dict()
             student_task["id"] = task_number
             student_task["tests"] = list()
-            for task_test in glob.glob(os.path.join(task_test_dir, "*-in")):
-                test = execute_test(task_test, list_student_task_solution[0])
+            if len(list_student_task_solution) == 0:
+                test = "Compiled solution not found"
                 student_task["tests"].append(test)
-                if test["match"]:
-                    task_score += 1
+            else:
+                for task_test in glob.glob(os.path.join(task_test_dir, "*-in")):
+                    test = execute_test(task_test, list_student_task_solution[0])
+                    student_task["tests"].append(test)
+                    if test["match"]:
+                        task_score += 1
             student_scores.append(task_score)
             student_tasks.append(student_task)
         append_student_result(data, student_dir, student_scores, student_tasks)
