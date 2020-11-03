@@ -15,24 +15,27 @@ def create_tasks_list(tests_dir):
     return tasks_test_dirs
 
 
-def execute_test(task_test, list_student_task_solution):
-    expected_test_output = task_test.replace("-in", "-out")
+def execute_test(test_input, list_student_task_solution):
+    expected_test_output = test_input.replace("-in", "-out")
     student_test_output = "/tmp/.tmpfile"
     student_task_solution = re.escape(os.path.join(".", list_student_task_solution))
 
-    command = "echo $(cat " + task_test + " | timeout 2 " + student_task_solution + " | tr [a-z] [A-Z]) > " + student_test_output
+    command = "echo $(cat " + test_input + " | timeout 2 " + student_task_solution + " | tr [a-z] [A-Z]) > " + student_test_output
     print(command)
     os.system(command)
 
+    test_input_fd = open(test_input)
     expected_test_output_fd = open(expected_test_output)
     student_test_output_fd = open(student_test_output)
 
     test = dict()
-    test["id"] = os.path.basename(task_test)[:-3]
+    test["id"] = os.path.basename(test_input)[:-3]
+    test["input"] = test_input_fd.read()
     test["expect_result"] = expected_test_output_fd.read()
     test["actual_result"] = student_test_output_fd.read()
     test["match"] = filecmp.cmp(expected_test_output, student_test_output)
 
+    test_input_fd.close()
     expected_test_output_fd.close()
     student_test_output_fd.close()
     os.unlink(student_test_output)
