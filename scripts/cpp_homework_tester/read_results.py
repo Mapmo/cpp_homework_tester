@@ -65,6 +65,7 @@ task_id = sys.argv[3]
 student_task = extract_student_task(student_result, task_id)
 if argc == 4:
     print(json.dumps(student_task, indent=4))
+    exit(0)
 
 test_id = sys.argv[4]
 student_test = extract_student_test(student_task, test_id)
