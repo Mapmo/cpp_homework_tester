@@ -55,7 +55,7 @@ for task_id in range(1, len(all_results_average) + 1):
                     print("------------------------------------------")
                     print("Test", task["id"] + "-" + test["id"])
                     print("\nInput:\n" + test["input"])
-                    print("Expected output\n" + test["expect_output"])
+                    print("Expected output:\n" + test["expect_output"])
                     print("Average score:", average_task_tests[task_id][int(test["id"]) - 1])
                     found_task = True
                 break
