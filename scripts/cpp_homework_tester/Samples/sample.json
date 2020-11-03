@@ -15,14 +15,14 @@
 					{
 						"id": 1,
 						"input" : "123",
-						"expected_result": "1234",
-						"actual_result": "1234",
+						"expect_output": "1234",
+						"actual_output": "1234",
 						"match": true
 					},
 					{
 						"id": 2,
-						"expected_result": "1234",
-						"actual_result": "1233",
+						"expect_output": "1234",
+						"actual_output": "1233",
 						"match": false
 					}
 				]
@@ -33,15 +33,15 @@
 					{
 						"id": 1,
 						"input" : "123",
-						"expected_result": "123",
-						"actual_result": "123",
+						"expect_output": "123",
+						"actual_output": "123",
 						"match": true
 					},
 					{
 						"id": 2,
 						"input" : "123",
-						"expected_result": "5",
-						"actual_result": "1233",
+						"expect_output": "5",
+						"actual_output": "1233",
 						"match": false
 					}
 				]
@@ -52,15 +52,15 @@
 					{
 						"id": 1,
 						"input" : "123",
-						"expected_result": "1234",
-						"actual_result": "1234",
+						"expect_output": "1234",
+						"actual_output": "1234",
 						"match": true
 					},
 					{
 						"id": 2,
 						"input" : "123",
-						"expected_result": "1234",
-						"actual_result": "1233",
+						"expect_output": "1234",
+						"actual_output": "1233",
 						"match": false
 					}
 				]
@@ -71,15 +71,15 @@
 					{
 						"id": 1,
 						"input" : "123",
-						"expected_result": "1234",
-						"actual_result": "1234",
+						"expect_output": "1234",
+						"actual_output": "1234",
 						"match": true
 					},
 					{
 						"id": 2,
 						"input" : "123",
-						"expected_result": "1234",
-						"actual_result": "1233",
+						"expect_output": "1234",
+						"actual_output": "1233",
 						"match": false
 					}
 				]
@@ -90,15 +90,15 @@
 					{
 						"id": 1,
 						"input" : "123",
-						"expected_result": "1234",
-						"actual_result": "124",
+						"expect_output": "1234",
+						"actual_output": "124",
 						"match": false
 					},
 					{
 						"id": 2,
 						"input" : "123",
-						"expected_result": "1234",
-						"actual_result": "1233",
+						"expect_output": "1234",
+						"actual_output": "1233",
 						"match": false
 					}
 				]
