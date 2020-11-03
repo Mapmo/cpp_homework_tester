@@ -1,11 +1,11 @@
 #!/bin/env python
 
-import build_solutions
+from libs import build_solutions
+from libs import test_homeworks
+from libs import validate_input
+from libs.validate_input import notest
 import os
 import sys
-import test_homeworks
-import validate_input
-from validate_input import notest
 import zipfile
 
 validate_input.main()
