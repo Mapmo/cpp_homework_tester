@@ -22,3 +22,21 @@ if len(all_results) <= 0:
 all_results = np.array(all_results)
 all_results_average = list(map(lambda x: round(x, 2), np.average(all_results, axis=0)))
 print("The average score for each task is:", all_results_average)
+
+for task_id in range(1, len(all_results_average) + 1):
+    current_task_tests = list()
+    for student in results:
+        for task in student["tasks"]:
+            if task["id"] == str(task_id):
+                student_task_tests = list()
+                for test in task["tests"]:
+                    try:
+                        student_task_tests.append(int(test["match"]))
+                    except TypeError:
+                        break
+                if len(student_task_tests) > 0:
+                    current_task_tests.append(student_task_tests)
+                break
+    current_task_tests = np.array(current_task_tests)
+    average_current_task_tests = list(map(lambda x: round(x, 2), np.average(current_task_tests, axis=0)))
+    print("Task", task_id, "has average score", average_current_task_tests)
