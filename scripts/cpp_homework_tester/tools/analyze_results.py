@@ -61,6 +61,18 @@ def print_task_tests_info(task_id):
                 return
 
 
+def print_task_test_info(task_id, test_id):
+    for student in results:
+        for task in student["tasks"]:
+            if task["id"] == task_to_print_id:
+                if type(task["tests"][0]) is not dict:
+                    break
+                for test in task["tests"]:
+                    if test["id"] == test_id:
+                        print_test_info(task["id"], test)
+                        return
+
+
 argc = len(sys.argv)
 if argc < 2 or argc > 5:
     print("Usage:", sys.argv[0], "JSON_FILE [TASK] [TEST_ID]")
@@ -83,5 +95,5 @@ if argc == 3:
     print_task_tests_info(task_to_print_id)
     exit(0)
 
-# test_to_print_id = sys.argv[3]
-# print_task_tests_info(task_to_print_id, test_to_print_id)
+test_to_print_id = sys.argv[3]
+print_task_test_info(task_to_print_id, test_to_print_id)
