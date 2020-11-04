@@ -42,23 +42,23 @@ def calculate_average_tasks_tests(tasks):
     return average_task_tests
 
 
+def print_test_info(task_id, test):
+    print("------------------------------------------")
+    print("Test", task_id + "-" + test["id"])
+    print("\nInput:\n" + test["input"])
+    print("Expected output:\n" + test["expect_output"])
+    print("Average score:", average_task_tests[int(task_id)][int(test["id"]) - 1])
+
+
 def print_task_tests_info(task_id):
-    found_task = False
     for student in results:
         for task in student["tasks"]:
             if task["id"] == task_to_print_id:
                 if type(task["tests"][0]) is not dict:
-                    continue
+                    break
                 for test in task["tests"]:
-                    print("------------------------------------------")
-                    print("Test", task["id"] + "-" + test["id"])
-                    print("\nInput:\n" + test["input"])
-                    print("Expected output:\n" + test["expect_output"])
-                    print("Average score:", average_task_tests[int(task_id)][int(test["id"]) - 1])
-                    found_task = True
-                break
-        if found_task:
-            return
+                    print_test_info(task["id"], test)
+                return
 
 
 argc = len(sys.argv)
@@ -79,4 +79,9 @@ if argc == 2:
     exit(0)
 
 task_to_print_id = sys.argv[2]
-print_task_tests_info(task_to_print_id)
+if argc == 3:
+    print_task_tests_info(task_to_print_id)
+    exit(0)
+
+# test_to_print_id = sys.argv[3]
+# print_task_tests_info(task_to_print_id, test_to_print_id)
