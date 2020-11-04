@@ -5,6 +5,16 @@ import numpy as np
 import sys
 
 
+def extract_all_scores(results):
+    all_scores = list()
+    for student in results:
+        all_scores.append(student["score"])
+    if len(all_scores) <= 0:
+        print("Critical error, no scores extracted from", json_file)
+        exit(1)
+    return all_scores
+
+
 def calculate_average_tasks(all_results):
     all_results = np.array(all_results)
     all_results_average = list(map(lambda x: round(x, 2), np.average(all_results, axis=0)))
@@ -41,22 +51,17 @@ if argc < 2 or argc > 5:
     print("Usage:", sys.argv[0], "JSON_FILE [TASK] [TEST_ID]")
     exit(1)
 
-json_file = (sys.argv[1])
+json_file = sys.argv[1]
 results = tools_functions.parse_json_file(json_file)
+all_scores = extract_all_scores(results)
 
-all_results = list()
-for student in results:
-    all_results.append(student["score"])
-if len(all_results) <= 0:
-    print("Critical error, no results extracted from", json_file)
-
-all_results_average = calculate_average_tasks(all_results)
-average_task_tests = calculate_average_tasks_tests(len(all_results_average))
+all_scores_average = calculate_average_tasks(all_scores)
+average_task_tests = calculate_average_tasks_tests(len(all_scores_average))
 
 if argc == 2:
     exit(0)
 
-for task_id in range(1, len(all_results_average) + 1):
+for task_id in range(1, len(all_scores_average) + 1):
     found_task = False
     for student in results:
         for task in student["tasks"]:
