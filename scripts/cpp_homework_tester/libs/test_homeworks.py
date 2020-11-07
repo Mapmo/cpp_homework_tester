@@ -20,7 +20,7 @@ def execute_test(test_input, list_student_task_solution):
     student_test_output = "/tmp/.tmpfile"
     student_task_solution = re.escape(os.path.join(".", list_student_task_solution))
 
-    command = "echo $(cat " + test_input + " | timeout 1 " + student_task_solution + " | tr [a-z] [A-Z]) > " + student_test_output
+    command = "echo $(cat " + test_input + " | timeout 1 " + student_task_solution + " | tr [a-z] [A-Z] | head -c 100) > " + student_test_output
     print(command)
     os.system(command)
 
