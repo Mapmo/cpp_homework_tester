@@ -20,7 +20,7 @@ def execute_test(test_input, list_student_task_solution):
     student_test_output = "/tmp/.tmpfile"
     student_task_solution = re.escape(os.path.join(".", list_student_task_solution))
 
-    command = "echo $(cat " + test_input + " | timeout 2 " + student_task_solution + " | tr [a-z] [A-Z]) > " + student_test_output
+    command = "echo $(cat " + test_input + " | timeout 1 " + student_task_solution + " | tr [a-z] [A-Z]) > " + student_test_output
     print(command)
     os.system(command)
 
@@ -41,6 +41,14 @@ def execute_test(test_input, list_student_task_solution):
     os.unlink(student_test_output)
 
     return test
+
+
+def atoi(text):
+    return int(text) if text.isdigit() else text
+
+
+def natural_keys(text):
+    return list(atoi(x) for x in re.split(r'(\d+)', text))
 
 
 def append_student_result(data, student_dir, student_scores, student_tasks):
@@ -74,7 +82,7 @@ def test_homeworks(students_to_test, tasks_test_dirs):
                 test = "Compiled solution not found"
                 student_task["tests"].append(test)
             else:
-                for task_test in glob.glob(os.path.join(task_test_dir, "*-in")):
+                for task_test in sorted(glob.glob(os.path.join(task_test_dir, "*-in")), key=natural_keys):
                     test = execute_test(task_test, list_student_task_solution[0])
                     student_task["tests"].append(test)
                     student_task_score += test["match"]
