@@ -47,19 +47,19 @@ def extract_student_test(student_task, test_id):
 def color_score(score):
     color = None
     final = None
-    if score == 1:
+    if score >= 0.8:
         color = "green"
         final = "2"
-    elif score >= 0.75:
+    elif score >= 0.6:
         color = "yellow"
         final = "1.5"
-    elif score >= 0.5:
+    elif score >= 0.4:
         color = "white"
         final = "1"
-    elif score >= 0.25:
+    elif score >= 0.2:
         color = "magenta"
         final = "0.5"
     else:
         color = "red"
         final = "0"
-    return colored(str(score) + "\t" + final + " points", color)
+    return colored(str(round(score * 100, 2)) + "%\t\t" + final + " points", color)
