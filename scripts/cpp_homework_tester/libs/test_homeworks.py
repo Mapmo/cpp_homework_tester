@@ -67,7 +67,7 @@ def dump_results_to_file(data):
 def test_homeworks(students_to_test, tasks_test_dirs):
     data = list()
     for student_dir in students_to_test:
-        student_scores = list()
+        student_score = list()
         student_tasks = list()
         os.chdir(student_dir)
         for task_test_dir in tasks_test_dirs:
@@ -81,13 +81,15 @@ def test_homeworks(students_to_test, tasks_test_dirs):
                 test = "Compiled solution not found"
                 student_task["tests"].append(test)
             else:
-                for task_test in sorted(glob.glob(os.path.join(task_test_dir, "*-in")), key=natural_keys):
+                task_tests = sorted(glob.glob(os.path.join(task_test_dir, "*-in")), key=natural_keys)
+                for task_test in task_tests:
                     test = execute_test(task_test, list_student_task_solution[0])
                     student_task["tests"].append(test)
                     student_task_score += test["match"]
-            student_scores.append(student_task_score)
+                student_task_score = round(student_task_score / len(task_tests), 2)
+            student_score.append(student_task_score)
             student_tasks.append(student_task)
-        append_student_result(data, student_dir, student_scores, student_tasks)
+        append_student_result(data, student_dir, student_score, student_tasks)
         os.chdir("..")
     dump_results_to_file(data)
 
