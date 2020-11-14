@@ -45,6 +45,7 @@ if argc == 2:
 faculty_number = sys.argv[2]
 student_result = tools_functions.extract_student_result(results, faculty_number)
 if argc == 3:
+    del student_result["tasks"]
     print(json.dumps(student_result, indent=4))
     exit(0)
 

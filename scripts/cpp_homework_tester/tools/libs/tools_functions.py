@@ -39,5 +39,5 @@ def extract_student_test(student_task, test_id):
     for student_test in student_task["tests"]:
         if student_test["id"] == test_id:
             return student_test
-    print("No test with id", test_id, "found in the student's tasks")
+    print("No test with id", test_id, "found in the student's tasks. Maybe using '--false' unintentionally?")
     exit(4)
