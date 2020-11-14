@@ -45,8 +45,9 @@ if argc == 2:
 faculty_number = sys.argv[2]
 student_result = tools_functions.extract_student_result(results, faculty_number)
 if argc == 3:
-    del student_result["tasks"]
-    print(json.dumps(student_result, indent=4))
+    print("Student", student_result["faculty_number"])
+    for task in range(len(student_result["score"])):
+        print("Task", task + 1, ":", tools_functions.color_score(student_result["score"][task]))
     exit(0)
 
 task_id = sys.argv[3]

@@ -2,6 +2,7 @@
 
 import json
 import os
+from termcolor import colored
 
 
 def parse_json_file(json_file):
@@ -41,3 +42,24 @@ def extract_student_test(student_task, test_id):
             return student_test
     print("No test with id", test_id, "found in the student's tasks. Maybe using '--false' unintentionally?")
     exit(4)
+
+
+def color_score(score):
+    color = None
+    final = None
+    if score == 1:
+        color = "green"
+        final = "2"
+    elif score >= 0.75:
+        color = "yellow"
+        final = "1.5"
+    elif score >= 0.5:
+        color = "white"
+        final = "1"
+    elif score >= 0.25:
+        color = "magenta"
+        final = "0.5"
+    else:
+        color = "red"
+        final = "0"
+    return colored(str(score) + "\t" + final + " points", color)
