@@ -8,11 +8,19 @@ import re
 import sys
 
 
+def atoi(text):
+    return int(text) if text.isdigit() else text
+
+
+def natural_keys(text):
+    return list(atoi(x) for x in re.split(r'(\d+)', text))
+
+
 def create_tasks_list(tests_dir):
     tasks_test_dirs = list()
     for task_test_dir in os.listdir(tests_dir):
         tasks_test_dirs.append(os.path.join(tests_dir, task_test_dir))
-    return tasks_test_dirs
+    return sorted(tasks_test_dirs, key=natural_keys)
 
 
 def execute_test(test_input, list_student_task_solution):
@@ -21,7 +29,6 @@ def execute_test(test_input, list_student_task_solution):
     student_task_solution = re.escape(os.path.join(".", list_student_task_solution))
 
     command = "echo $(cat " + test_input + " | timeout 1 " + student_task_solution + " | tr [a-z] [A-Z] | head -c 100) > " + student_test_output
-    print(command)
     os.system(command)
 
     test_input_fd = open(test_input)
@@ -41,14 +48,6 @@ def execute_test(test_input, list_student_task_solution):
     os.unlink(student_test_output)
 
     return test
-
-
-def atoi(text):
-    return int(text) if text.isdigit() else text
-
-
-def natural_keys(text):
-    return list(atoi(x) for x in re.split(r'(\d+)', text))
 
 
 def append_student_result(data, student_dir, student_scores, student_tasks):
@@ -100,7 +99,7 @@ def main():
     if len(sys.argv) > 3:
         students_to_test = sys.argv[3:]
     else:
-        students_to_test = glob.glob("*")
+        students_to_test = sorted(glob.glob("*"))
     test_homeworks(students_to_test, tasks_test_dirs)
 
 
