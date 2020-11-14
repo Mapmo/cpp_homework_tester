@@ -92,7 +92,7 @@ def create_student_dirs():
             remove_zipped_dir()
             os.chdir("..")
         else:
-            print("Not a zipfile found while creating the user directories and will be deleted:", homework_path)
+            print("File", os.path.basename(homework_path), "is not a zip file and student wont have his homework tested")
             os.unlink(homework_path)
 
 
@@ -136,14 +136,13 @@ def compile_homeworks():
                 invalid = check_for_system_calls(file_to_compile)
                 if invalid > 0:
                     if invalid == 1:
-                        print("File", file_to_compile, "cannot be opened for reading in utf-8-signed and won't be compiled")
+                        print("File", os.path.basename(file_to_compile), "cannot be opened for reading in utf-8-signed and won't be compiled")
                     else:
-                        print("File", file_to_compile, "contails system() calls and won't be compiled")
+                        print("File", os.path.basename(file_to_compile), "contails system() calls and won't be compiled")
                     continue
                 add_all_libs(file_to_compile)
                 file_to_produce = os.path.join(root, file.replace(".cpp", ".exe"))
                 command = "g++ '" + file_to_compile + "' -o '" + file_to_produce + "' 2> /dev/null || exit 1"
-                print(command)
 
                 # os.system('command') returns a 16 bit number
                 # first 8 bits from left(lsb) talks about signal used by os to close the command
@@ -151,7 +150,7 @@ def compile_homeworks():
                 # 256 in 16 bits -  00000001 00000000
                 # Exit code is 00000001 which means 1
                 if os.system(command) == 256:
-                    print("Failed to compile", file_to_compile)
+                    print("File", os.path.basename(file_to_compile), "failed to compile")
 
 
 def main():
