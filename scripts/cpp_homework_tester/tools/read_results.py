@@ -46,8 +46,10 @@ faculty_number = sys.argv[2]
 student_result = tools_functions.extract_student_result(results, faculty_number)
 if argc == 3:
     print("Student", student_result["faculty_number"])
-    for task in range(len(student_result["score"])):
-        print("Task", task + 1, ":", tools_functions.color_score(student_result["score"][task]))
+    tasks_count = len(student_result["score"])
+    color_score = tools_functions.color_score_5 if tasks_count == 5 else tools_functions.color_score_4
+    for task in range(tasks_count):
+        print("Task", task + 1, ":", color_score(student_result["score"][task]))
     exit(0)
 
 task_id = sys.argv[3]
