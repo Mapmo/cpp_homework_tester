@@ -52,7 +52,7 @@ def move_student_homework(student_homework):
         return -1
 
 
-def remove_zipped_dir():
+def remove_zipped_dir(faculty_number):
     # This function is for students who zipped a directory containing their homeworks
     if len(glob.glob("*.cpp")) == 0:
         zipped_dir = glob.glob("*")[0]
@@ -62,8 +62,11 @@ def remove_zipped_dir():
         for student_homework in all_student_homeworks:
             if move_student_homework(student_homework) == -1:
                 return
-        os.rmdir(zipped_dir)
-
+        try:
+            os.rmdir(zipped_dir)
+        except OSError:
+            print("Zipped directory of", faculty_number, "not empty")
+            shutil.rmtree(zipped_dir)
 
 def create_student_dirs():
     # Create a directory for each student based on the faculty number and extract their homework there
@@ -89,7 +92,7 @@ def create_student_dirs():
                     continue
             os.unlink(homework)
             remove_mac_dir()
-            remove_zipped_dir()
+            remove_zipped_dir(faculty_number)
             os.chdir("..")
         else:
             print("File", os.path.basename(homework_path), "is not a zip file and student wont have his homework tested")
