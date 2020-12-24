@@ -9,6 +9,7 @@ import sys
 import zipfile
 
 validate_input.main()
+test_homeworks.execute_dir = os.getcwd()
 
 if zipfile.is_zipfile(sys.argv[1]):
     build_solutions.main()

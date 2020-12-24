@@ -7,6 +7,8 @@ import os
 import re
 import sys
 
+execute_dir = ''
+
 
 def atoi(text):
     return int(text) if text.isdigit() else text
@@ -17,9 +19,12 @@ def natural_keys(text):
 
 
 def create_tasks_list(tests_dir):
+    cwd = os.getcwd()
+    os.chdir(tests_dir)  # used when the zip file for build_solutions is in a separate directory and user uses relative paths
     tasks_test_dirs = list()
-    for task_test_dir in os.listdir(tests_dir):
+    for task_test_dir in glob.glob('*'):
         tasks_test_dirs.append(os.path.join(tests_dir, task_test_dir))
+    os.chdir(cwd)
     return sorted(tasks_test_dirs, key=natural_keys)
 
 
@@ -95,9 +100,8 @@ def test_homeworks(students_to_test, tasks_test_dirs):
 
 
 def main():
-    tests_dir = sys.argv[2]
+    tests_dir = os.path.join(execute_dir, sys.argv[2])
     tasks_test_dirs = create_tasks_list(tests_dir)
-
     if len(sys.argv) > 3:
         students_to_test = sys.argv[3:]
     else:
