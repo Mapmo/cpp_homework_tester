@@ -68,6 +68,7 @@ def remove_zipped_dir(faculty_number):
             print("Zipped directory of", faculty_number, "not empty")
             shutil.rmtree(zipped_dir)
 
+
 def create_student_dirs():
     # Create a directory for each student based on the faculty number and extract their homework there
     all_files = list()
@@ -100,7 +101,7 @@ def create_student_dirs():
 
 
 def remove_moodle_dirs():
-    for moodle_dir in glob.glob("[!0-9]*"):
+    for moodle_dir in glob.glob("*[!0-9]*"):
         os.rmdir(moodle_dir)
 
 
