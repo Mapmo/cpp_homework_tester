@@ -45,6 +45,25 @@ def extract_student_test(student_task, test_id):
 
 
 # Used when the HW has 5 tasks and each task earns 2 points
+def color_score_3(score):
+    color = None
+    final = None
+    if score >= 0.66:
+        color = "green"
+        final = "3"
+    elif score >= 0.33:
+        color = "yellow"
+        final = "2"
+    elif score > 0:
+        color = "white"
+        final = "1"
+    else:
+        color = "red"
+        final = "0"
+    return colored(str(round(score * 100, 2)) + "%\t\t" + final + " points", color)
+
+
+# Used when the HW has 5 tasks and each task earns 2 points
 def color_score_5(score):
     color = None
     final = None
