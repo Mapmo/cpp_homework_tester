@@ -43,13 +43,13 @@ def execute_test(test_input, list_student_task_solution):
     test = dict()
     test["id"] = os.path.basename(test_input)[:-3]
     test["input"] = test_input_fd.read()
-    test["expect_output"] = expected_test_output_fd.read()
+    test["expect_output"] = expected_test_output_fd.read().strip()
     try:
-        test["actual_output"] = student_test_output_fd.read()
+        test["actual_output"] = student_test_output_fd.read().strip()
     except UnicodeDecodeError:
         print("File", student_task_solution, "produces some unicode issues")
         test["actual_output"] = "encoding issue"
-    test["match"] = filecmp.cmp(expected_test_output, student_test_output)
+    test["match"] = test["expect_output"] == test["actual_output"]
 
     test_input_fd.close()
     expected_test_output_fd.close()
