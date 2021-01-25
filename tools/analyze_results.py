@@ -75,7 +75,8 @@ def print_task_test_info(task_id, test_id):
 
 argc = len(sys.argv)
 if argc < 2 or argc > 5:
-    print("Usage:", sys.argv[0], "JSON_FILE [TASK] [TEST_ID]")
+    print("Usage:")
+    print("\t" + sys.argv[0], "JSON_FILE [TASK] [TEST_ID]\n")
     exit(1)
 
 json_file = sys.argv[1]
