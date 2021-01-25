@@ -28,7 +28,8 @@ def remove_successful_tests():
 false_option_set = check_for_false_option()
 argc = len(sys.argv)
 if argc < 2 or argc > 5:
-    print("Usage:", sys.argv[0], "JSON_FILE [[[FN] [TASK_ID] [TEST_ID]] [" + false_option + "]]")
+    print("Usage:", sys.argv[0], "JSON_FILE [[[FN] [TASK_ID] [TEST_ID]]]")
+    print("\t\t" + false_option, "- prints only the tests that appear to have failed the testing")
     exit(1)
 
 
