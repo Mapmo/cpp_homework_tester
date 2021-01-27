@@ -19,7 +19,7 @@ def main():
     if argc < 3:
         print_usage()
 
-    for arg in sys.argv[1:2]:
+    for arg in sys.argv[1:3]:
         if not os.path.exists(arg):
             print_usage()
 
