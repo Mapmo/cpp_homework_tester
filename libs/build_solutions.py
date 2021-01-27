@@ -148,12 +148,7 @@ def compile_homeworks():
                 file_to_produce = os.path.join(root, file.replace(".cpp", ".exe"))
                 command = "g++ '" + file_to_compile + "' -o '" + file_to_produce + "' 2> /dev/null || exit 1"
 
-                # os.system('command') returns a 16 bit number
-                # first 8 bits from left(lsb) talks about signal used by os to close the command
-                # next 8 bits talks about return code of command
-                # 256 in 16 bits -  00000001 00000000
-                # Exit code is 00000001 which means 1
-                if os.system(command) == 256:
+                if os.system(command) != 0:
                     print("File", os.path.basename(file_to_compile), "failed to compile")
 
 
