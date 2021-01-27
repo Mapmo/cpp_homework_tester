@@ -20,5 +20,7 @@ else:
     validate_input.print_usage()
     exit(1)
 
-if notest not in sys.argv:
-    test_homeworks.main()
+if notest in sys.argv:
+	exit(0)
+
+test_homeworks.main()
