@@ -16,7 +16,7 @@ How to use the scripts in the project:
 				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--notest - does not run tests, only attempts to compile all files from zip_file_all
 			</li>
 			<li>
-				cpp_homework_tester.py HW_DIR TEST_DIR [FN]... - does not compile solutions, HW_DOR is a directory that contains directories named with students ids </br>
+				cpp_homework_tester.py HW_DIR TEST_DIR [FN]... - does not compile solutions, HW_DIR is a directory that contains directories named with students ids </br>
 			<li>
 				 If FNs are passed, the tests will be conducted only for the specified students. The .results file will be overwritten!
 			</li>
