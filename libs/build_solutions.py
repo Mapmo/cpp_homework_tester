@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 
 import glob
+import os
 import re
 import shutil
 import sys
-import os
 import zipfile
 
 

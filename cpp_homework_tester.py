@@ -1,12 +1,14 @@
 #!/bin/env python
 
-from libs import build_solutions
-from libs import test_homeworks
-from libs import validate_input
-from libs.validate_input import notest
 import os
 import sys
 import zipfile
+
+from libs import build_solutions
+from libs import test_homeworks
+from libs import validate_input
+
+from libs.validate_input import notest
 
 validate_input.main()
 test_homeworks.execute_dir = os.getcwd()

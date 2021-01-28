@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 
-from libs import tools_functions
 import json
 import sys
 
+from libs import tools_functions
 
 false_option = "--false"
 

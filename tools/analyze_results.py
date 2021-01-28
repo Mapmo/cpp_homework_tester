@@ -1,8 +1,10 @@
 #!/usr/bin/env python
 
-from libs import tools_functions
-import numpy as np
 import sys
+
+import numpy as np
+
+from libs import tools_functions
 
 
 def extract_all_scores(results):
