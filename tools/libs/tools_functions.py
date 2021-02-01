@@ -9,11 +9,9 @@ def parse_json_file(json_file):
     if not os.path.isfile(json_file):
         print(json_file, "is not a regular file")
         exit(1)
-    json_file_fd = open(json_file)
-    json_file_data = json_file_fd.read()
-    json_file_fd.close()
     try:
-        results = json.loads(json_file_data)
+        with open(json_file) as json_file_fd:
+            results = json.load(json_file_fd)
     except ValueError:
         print(json_file, "not a valid json file")
         exit(1)

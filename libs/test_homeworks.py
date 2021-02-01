@@ -1,6 +1,5 @@
 #!/bin/env python
 
-import filecmp
 import glob
 import json
 import os
@@ -36,26 +35,21 @@ def execute_test(test_input, list_student_task_solution):
     command = "echo $(cat " + test_input + " | timeout 1 " + student_task_solution + " | tr [a-z] [A-Z] | head -c 100) > " + student_test_output
     os.system(command)
 
-    test_input_fd = open(test_input)
-    expected_test_output_fd = open(expected_test_output)
-    student_test_output_fd = open(student_test_output)
+    with open(test_input) as test_input_fd:
+        with open(expected_test_output) as expected_test_output_fd:
+            with open(student_test_output) as student_test_output_fd:
+                test = dict()
+                test["id"] = os.path.basename(test_input)[:-3]
+                test["input"] = test_input_fd.read()
+                test["expect_output"] = expected_test_output_fd.read().strip()
+                try:
+                    test["actual_output"] = student_test_output_fd.read().strip()
+                except UnicodeDecodeError:
+                    print("File", student_task_solution, "produces some unicode issues")
+                    test["actual_output"] = "encoding issue"
+                test["match"] = test["expect_output"] == test["actual_output"]
 
-    test = dict()
-    test["id"] = os.path.basename(test_input)[:-3]
-    test["input"] = test_input_fd.read()
-    test["expect_output"] = expected_test_output_fd.read().strip()
-    try:
-        test["actual_output"] = student_test_output_fd.read().strip()
-    except UnicodeDecodeError:
-        print("File", student_task_solution, "produces some unicode issues")
-        test["actual_output"] = "encoding issue"
-    test["match"] = test["expect_output"] == test["actual_output"]
-
-    test_input_fd.close()
-    expected_test_output_fd.close()
-    student_test_output_fd.close()
     os.unlink(student_test_output)
-
     return test
 
 
@@ -68,9 +62,8 @@ def append_student_result(data, student_dir, student_scores, student_tasks):
 
 
 def dump_results_to_file(data):
-    results_file_fd = open(".results.json", "w")
-    json.dump(data, results_file_fd)
-    results_file_fd.close()
+    with open(".results.json", "w") as results_file_fd:
+        json.dump(data, results_file_fd)
 
 
 def test_homeworks(students_to_test, tasks_test_dirs):

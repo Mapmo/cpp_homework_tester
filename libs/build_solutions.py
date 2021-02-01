@@ -107,10 +107,10 @@ def remove_moodle_dirs():
 
 def check_for_system_calls(file_to_compile):
     try:
-        file_to_compile_fd = open(file_to_compile, encoding="utf-8-sig")  # Using utf-8-sig since some code is written on windows and it may contain characters like <feff>
-        for line in file_to_compile_fd:
-            if re.search("system\(", line):
-                return 2
+        with open(file_to_compile, encoding="utf-8-sig") as file_to_compile_fd:  # Using utf-8-sig since some code is written on windows and it may contain characters like <feff>
+            for line in file_to_compile_fd:
+                if re.search("system\(", line):
+                    return 2
     except UnicodeDecodeError:
         return 1
     return 0
@@ -118,16 +118,14 @@ def check_for_system_calls(file_to_compile):
 
 def add_all_libs(original_file):
     # The following function is needed for compiling VS C++ code, since the libraries in VS contain more functions that g++
-    original_file_d = open(original_file, encoding="utf-8-sig")  # Using utf-8-sig since some code is written on windows and it may contain characters like <feff>
-    original_content = original_file_d.read()
-    new_file = original_file + "~"
-    new_file_d = open(new_file, "w+")
-    libs_to_add = ["cmath", "climits", "limits"]
-    for lib in libs_to_add:
-        new_file_d.write("#include <" + lib + ">\n")
-    new_file_d.write(original_content.strip())
-    original_file_d.close()
-    new_file_d.close()
+    with open(original_file, encoding="utf-8-sig") as original_file_d:  # Using utf-8-sig since some code is written on windows and it may contain characters like <feff>
+        original_content = original_file_d.read()
+        new_file = original_file + "~"
+        with open(new_file, "w+") as new_file_d:
+            libs_to_add = ["cmath", "climits", "limits"]
+            for lib in libs_to_add:
+                new_file_d.write("#include <" + lib + ">\n")
+            new_file_d.write(original_content.strip())
     shutil.move(new_file, original_file)
 
 
