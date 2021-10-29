@@ -98,7 +98,7 @@ def create_student_dirs():
 
 
 def remove_moodle_dirs():
-    for moodle_dir in glob.glob("*[!0-9]*"):
+    for moodle_dir in glob.glob("[!0-9]*"):
         os.rmdir(moodle_dir)
 
 
@@ -119,7 +119,7 @@ def add_all_libs(original_file):
         original_content = original_file_d.read()
         new_file = original_file + "~"
         with open(new_file, "w+") as new_file_d:
-            libs_to_add = ["cmath", "climits", "limits"]
+            libs_to_add = ["cmath", "limits"]
             for lib in libs_to_add:
                 new_file_d.write("#include <" + lib + ">\n")
             new_file_d.write(original_content.strip())
