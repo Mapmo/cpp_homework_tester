@@ -24,11 +24,8 @@ def unzip_homeworks():
 
 def extract_faculty_number(homework_path, homework):
     try:
-        faculty_number = re.findall("\d+", homework.split('_')[2])[0]
-        if faculty_number.isnumeric():
-            return faculty_number
-        else:
-            print("Failed to extract a numeric faculty number from", homework_path)
+        faculty_number = re.findall("(\d(?:MI)?\d+)", homework.split('_')[2])[0]
+        return faculty_number
     except IndexError:
         print("Failed to extract faculty number from", homework_path)
     os.unlink(homework_path)
