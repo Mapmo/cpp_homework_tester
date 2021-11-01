@@ -52,7 +52,11 @@ def move_student_homework(student_homework):
 def remove_zipped_dir(faculty_number):
     # This function is for students who zipped a directory containing their homeworks
     if len(glob.glob("*.cpp")) == 0:
-        zipped_dir = glob.glob("*")[0]
+        try:
+            zipped_dir = glob.glob("*")[0]
+        except IndexError:
+            print("Faculty number", faculty_number, "having no files after unzip")
+            return
         all_student_homeworks = list()
         for (student_root, student_dirs, student_homeworks) in os.walk(os.getcwd()):
             all_student_homeworks += [os.path.join(student_root, student_homework) for student_homework in student_homeworks]
