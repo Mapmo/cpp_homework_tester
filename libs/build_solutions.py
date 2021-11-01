@@ -119,7 +119,7 @@ def add_all_libs(original_file):
         original_content = original_file_d.read()
         new_file = original_file + "~"
         with open(new_file, "w+") as new_file_d:
-            libs_to_add = ["cmath", "limits"]
+            libs_to_add = ["cmath", "limits", "cfloat"]
             for lib in libs_to_add:
                 new_file_d.write("#include <" + lib + ">\n")
             new_file_d.write(original_content.strip())
