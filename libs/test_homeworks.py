@@ -32,7 +32,7 @@ def execute_test(test_input, list_student_task_solution):
     student_test_output = "/tmp/.tmpfile"
     student_task_solution = re.escape(os.path.join(".", list_student_task_solution))
 
-    command = "cat " + test_input + " | timeout 2 " + student_task_solution + " | tr [a-z] [A-Z] | head -c 300 > " + student_test_output
+    command = "cat " + test_input + " | timeout 1 " + student_task_solution + " | head -c 300 > " + student_test_output
     os.system(command)
 
     with open(test_input) as test_input_fd:
@@ -41,9 +41,9 @@ def execute_test(test_input, list_student_task_solution):
                 test = dict()
                 test["id"] = os.path.basename(test_input)[:-3]
                 test["input"] = test_input_fd.read()
-                test["expect_output"] = expected_test_output_fd.read().strip().upper()
+                test["expect_output"] = expected_test_output_fd.read().strip().lower()
                 try:
-                    test["actual_output"] = student_test_output_fd.read().strip()
+                    test["actual_output"] = student_test_output_fd.read().strip().lower()
                 except UnicodeDecodeError:
                     print("File", student_task_solution, "produces some unicode issues")
                     test["actual_output"] = "encoding issue"
