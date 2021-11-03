@@ -29,11 +29,9 @@ def main():
             print("Student specified with", notest)
             print_usage()
         for arg in sys.argv[3:]:
-            if arg.isnumeric():
-                arg_path = os.path.join(sys.argv[1], arg)
-                if not os.path.isdir(arg_path):
-                    print("No such directory, ", arg_path)
-                    print_usage()
-            elif arg != notest:
-                print(arg, "is an invalid argument")
+            if arg != notest:
+                continue
+            arg_path = os.path.join(sys.argv[1], arg)
+            if not os.path.isdir(arg_path):
+                print("No such directory, ", arg_path)
                 print_usage()
