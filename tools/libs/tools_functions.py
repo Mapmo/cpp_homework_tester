@@ -88,6 +88,20 @@ def score_5(score):
         final = 0.0
     return final
 
+def pick_color(final):
+    if final > 2:
+        return "cyan"
+    elif final == 2:
+        return "green"
+    elif final >= 1.5:
+        return "yellow"
+    elif final >= 1:
+        return "white"
+    elif final >= 0.5:
+        return "magenta"
+    else:
+        return "red"
+
 
 def color_score(score, tasks_count):
     final = None
@@ -98,18 +112,6 @@ def color_score(score, tasks_count):
     else:
         final = score_5(score)
 
-    color = None
-    if final > 2:
-        color = "cyan"
-    elif final == 2:
-        color = "green"
-    elif final >= 1.5:
-        color = "yellow"
-    elif final >= 1:
-        color = "white"
-    elif final >= 0.5:
-        color = "magenta"
-    else:
-        color = "red"
+    color = pick_color(final)
 
     return colored(str(round(score * 100, 2)) + "%\t\t" + str(final) + " points", color)
