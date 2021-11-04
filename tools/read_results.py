@@ -52,19 +52,19 @@ if argc == 3:
 
     tasks_count = len(student_result["score"])
     if tasks_count == 5:
-        score = tools_functions.score_5
+        grade = tools_functions.grade_5
     elif tasks_count == 4:
-        score = tools_functions.score_4
+        grade = tools_functions.grade_4
     else:
-        score = tools_functions.score_3
+        grade = tools_functions.grade_3
 
     total = 0
     for task in range(tasks_count):
         task_score = student_result["score"][task]
-        points = score(student_result["score"][task])
+        points = grade(task_score)
         total += points
-        colored_score = tools_functions.color_score(task_score, tasks_count)
-        print("Task", task + 1, ":", colored_score)
+        colored_grade = tools_functions.color_score(task_score, points, tasks_count)
+        print("Task", task + 1, ":", colored_grade)
     print(colored("\t\t\t" + str(total) + " points", 'white'))
     exit(0)
 

@@ -42,7 +42,7 @@ def extract_student_test(student_task, test_id):
     exit(4)
 
 # Used when the HW has 3 tasks and each task earns 3 points
-def score_3(score):
+def grade_3(score):
     final = None
     if score >= 0.66:
         final = 3.0
@@ -56,7 +56,7 @@ def score_3(score):
 
 
 # Used when the HW has 4 tasks and each task earns 2.5 points
-def score_4(score):
+def grade_4(score):
     final = None
     if score >= 0.8:
         final = 2.5
@@ -74,7 +74,7 @@ def score_4(score):
 
 
 # Used when the HW has 5 tasks and each task earns 2 points
-def score_5(score):
+def grade_5(score):
     final = None
     if score >= 0.8:
         final = 2.0
@@ -103,15 +103,6 @@ def pick_color(final):
         return "red"
 
 
-def color_score(score, tasks_count):
-    final = None
-    if tasks_count == 3:
-        final = score_3(score)
-    elif tasks_count == 4:
-        final = score_4(score)
-    else:
-        final = score_5(score)
-
+def color_score(score, final, tasks_count):
     color = pick_color(final)
-
     return colored(str(round(score * 100, 2)) + "%\t\t" + str(final) + " points", color)
