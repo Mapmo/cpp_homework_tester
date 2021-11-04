@@ -65,7 +65,7 @@ if argc == 3:
         total += points
         colored_grade = tools_functions.color_score(task_score, points, tasks_count)
         print("Task", task + 1, ":", colored_grade)
-    print(colored("\t\t\t" + str(total) + " points", 'white'))
+    print(colored("\t\t Total:\t" + str(total) + " points", 'white'))
     exit(0)
 
 task_id = sys.argv[3]
