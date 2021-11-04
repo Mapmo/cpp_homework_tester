@@ -41,6 +41,7 @@ def extract_student_test(student_task, test_id):
     print("No test with id", test_id, "found in the student's tasks. Maybe using '--false' unintentionally?")
     exit(4)
 
+# Used when the HW has 3 tasks and each task earns 3 points
 def score_3(score):
     final = None
     if score >= 0.66:
@@ -49,6 +50,24 @@ def score_3(score):
         final = 2.0
     elif score > 0:
         final = 1.0
+    else:
+        final = 0.0
+    return final
+
+
+# Used when the HW has 4 tasks and each task earns 2.5 points
+def score_4(score):
+    final = None
+    if score >= 0.8:
+        final = 2.5
+    elif score >= 0.6:
+        final = 2.0
+    elif score >= 0.4:
+        final = 1.5
+    elif score >= 0.2:
+        final = 1.0
+    elif score > 0:
+        final = 0.5
     else:
         final = 0.0
     return final
@@ -69,22 +88,6 @@ def score_5(score):
         final = 0.0
     return final
 
-# Used when the HW has 4 tasks and each task earns 2.5 points
-def score_4(score):
-    final = None
-    if score >= 0.8:
-        final = 2.5
-    elif score >= 0.6:
-        final = 2.0
-    elif score >= 0.4:
-        final = 1.5
-    elif score >= 0.2:
-        final = 1.0
-    elif score > 0:
-        final = 0.5
-    else:
-        final = 0.0
-    return final
 
 def color_score(score, tasks_count):
     final = None
