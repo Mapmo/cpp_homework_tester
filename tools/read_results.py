@@ -4,6 +4,7 @@ import json
 import sys
 
 from libs import tools_functions
+from termcolor import colored
 
 false_option = "--false"
 
@@ -51,14 +52,20 @@ if argc == 3:
 
     tasks_count = len(student_result["score"])
     if tasks_count == 5:
-        color_score = tools_functions.color_score_5
+        score = tools_functions.score_5
     elif tasks_count == 4:
-        color_score = tools_functions.color_score_4
+        score = tools_functions.score_4
     else:
-        color_score = tools_functions.color_score_3
+        score = tools_functions.score_3
 
+    total = 0
     for task in range(tasks_count):
-        print("Task", task + 1, ":", color_score(student_result["score"][task]))
+        task_score = student_result["score"][task]
+        points = score(student_result["score"][task])
+        total += points
+        colored_score = tools_functions.color_score(task_score, tasks_count)
+        print("Task", task + 1, ":", colored_score)
+    print(colored("\t\t\t" + str(total) + " points", 'white'))
     exit(0)
 
 task_id = sys.argv[3]

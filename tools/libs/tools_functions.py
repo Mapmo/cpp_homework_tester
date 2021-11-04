@@ -41,68 +41,72 @@ def extract_student_test(student_task, test_id):
     print("No test with id", test_id, "found in the student's tasks. Maybe using '--false' unintentionally?")
     exit(4)
 
-
-# Used when the HW has 5 tasks and each task earns 2 points
-def color_score_3(score):
-    color = None
+def score_3(score):
     final = None
     if score >= 0.66:
-        color = "green"
-        final = "3"
+        final = 3.0
     elif score >= 0.33:
-        color = "yellow"
-        final = "2"
+        final = 2.0
     elif score > 0:
-        color = "white"
-        final = "1"
+        final = 1.0
     else:
-        color = "red"
-        final = "0"
-    return colored(str(round(score * 100, 2)) + "%\t\t" + final + " points", color)
+        final = 0.0
+    return final
 
 
 # Used when the HW has 5 tasks and each task earns 2 points
-def color_score_5(score):
-    color = None
+def score_5(score):
     final = None
     if score >= 0.8:
-        color = "green"
-        final = "2"
+        final = 2.0
     elif score >= 0.6:
-        color = "yellow"
-        final = "1.5"
+        final = 1.5
     elif score >= 0.4:
-        color = "white"
-        final = "1"
+        final = 1.0
     elif score >= 0.2:
-        color = "magenta"
-        final = "0.5"
+        final = 0.5
     else:
-        color = "red"
-        final = "0"
-    return colored(str(round(score * 100, 2)) + "%\t\t" + final + " points", color)
-
+        final = 0.0
+    return final
 
 # Used when the HW has 4 tasks and each task earns 2.5 points
-def color_score_4(score):
-    color = None
+def score_4(score):
     final = None
     if score >= 0.8:
-        color = "green"
-        final = "2.5"
+        final = 2.5
     elif score >= 0.6:
-        color = "yellow"
-        final = "2"
+        final = 2.0
     elif score >= 0.4:
-        color = "blue"
-        final = "1.5"
+        final = 1.5
     elif score >= 0.2:
-        color = "white"
-        final = "1"
+        final = 1.0
     elif score > 0:
+        final = 0.5
+    else:
+        final = 0.0
+    return final
+
+def color_score(score, tasks_count):
+    final = None
+    if tasks_count == 3:
+        final = score_3(score)
+    elif tasks_count == 4:
+        final = score_4(score)
+    else:
+        final = score_5(score)
+
+    color = None
+    if final > 2:
+        color = "cyan"
+    elif final == 2:
+        color = "green"
+    elif final >= 1.5:
+        color = "yellow"
+    elif final >= 1:
+        color = "white"
+    elif final >= 0.5:
         color = "magenta"
-        final = "0.5"
     else:
         color = "red"
-        final = "0"
-    return colored(str(round(score * 100, 2)) + "%\t\t" + final + " points", color)
+
+    return colored(str(round(score * 100, 2)) + "%\t\t" + str(final) + " points", color)
