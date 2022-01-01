@@ -123,7 +123,7 @@ def add_all_libs(original_file):
         original_content = original_file_d.read()
         new_file = original_file + "~"
         with open(new_file, "w+") as new_file_d:
-            libs_to_add = ["cmath", "limits", "cfloat"]
+            libs_to_add = ["cfloat", "climits", "cmath", "cstring", "limits"]
             for lib in libs_to_add:
                 new_file_d.write("#include <" + lib + ">\n")
             new_file_d.write(original_content.strip())
@@ -143,7 +143,8 @@ def compile_homeworks():
                     else:
                         print("File", os.path.basename(file_to_compile), "contails system() calls and won't be compiled")
                     continue
-                add_all_libs(file_to_compile)
+                if re.search("vc", file, re.IGNORECASE):
+                    add_all_libs(file_to_compile)
                 file_to_produce = os.path.join(root, file.replace(".cpp", ".exe"))
                 command = "g++ '" + file_to_compile + "' -o '" + file_to_produce + "' 2> /dev/null || exit 1"
 
