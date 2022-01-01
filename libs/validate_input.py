@@ -28,10 +28,3 @@ def main():
         if notest in sys.argv and argc > 4:
             print("Student specified with", notest)
             print_usage()
-        for arg in sys.argv[3:]:
-            if arg != notest:
-                continue
-            arg_path = os.path.join(sys.argv[1], arg)
-            if not os.path.isdir(arg_path):
-                print("No such directory, ", arg_path)
-                print_usage()
