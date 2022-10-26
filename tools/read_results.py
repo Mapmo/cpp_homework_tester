@@ -5,6 +5,7 @@ import sys
 from libs import tools_functions
 from termcolor import colored
 
+
 def remove_successful_tests():
     for student in results:
         for task in student["tasks"]:
@@ -15,22 +16,21 @@ def remove_successful_tests():
                     del task["tests"][test - 1]
 
 
-
-parser = argparse.ArgumentParser(description='Process some integers.')
-parser.add_argument('--false', action='store_true', help='Display only failed tests')
-parser.add_argument('JSON_FILE', type=str, help='The json file with the results')
-parser.add_argument('FN', type=str, nargs='?', help='Faculty number of the student')
-parser.add_argument('TASK_ID', type=str, nargs='?')
-parser.add_argument('TEST_ID', type=str, nargs='?')
+parser = argparse.ArgumentParser(description="Process some integers.")
+parser.add_argument("--false", action="store_true", help="Display only failed tests")
+parser.add_argument("JSON_FILE", type=str, help="The json file with the results")
+parser.add_argument("FN", type=str, nargs="?", help="Faculty number of the student")
+parser.add_argument("TASK_ID", type=str, nargs="?")
+parser.add_argument("TEST_ID", type=str, nargs="?")
 args = parser.parse_args()
 
-json_file = (sys.argv[1])
+json_file = sys.argv[1]
 results = tools_functions.parse_json_file(json_file)
 
 if args.false:
     remove_successful_tests()
 
-if not args.FN :
+if not args.FN:
     print(json.dumps(results, indent=4))
     exit(0)
 
@@ -53,7 +53,7 @@ if not args.TASK_ID:
         total += points
         colored_grade = tools_functions.color_score(task_score, points, tasks_count)
         print(f"Task {task + 1}: {colored_grade}")
-    print(colored(f"\t\tTotal:\t{total} points", 'white'))
+    print(colored(f"\t\tTotal:\t{total} points", "white"))
     exit(0)
 
 
