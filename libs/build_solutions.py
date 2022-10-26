@@ -18,13 +18,13 @@ def unzip_homeworks():
     new_dir = src_zip_name[:-4]
     os.mkdir(new_dir)
     os.chdir(new_dir)
-    with zipfile.ZipFile(src_zip, 'r') as src_zip_obj:
+    with zipfile.ZipFile(src_zip, "r") as src_zip_obj:
         src_zip_obj.extractall(".")
 
 
 def extract_faculty_number(homework_path, homework):
     try:
-        faculty_number = re.findall("(\d(?:MI)?\d+)", homework.split('_')[2])[0]
+        faculty_number = re.findall("(\d(?:MI)?\d+)", homework.split("_")[2])[0]
         return faculty_number
     except IndexError:
         print("Failed to extract faculty number from", homework_path)
@@ -44,7 +44,11 @@ def move_student_homework(student_homework):
     try:
         shutil.move(student_homework, os.getcwd())
     except shutil.Error:
-        print("Faculty number", os.path.basename(os.getcwd()), "having no cpp files after unzip")
+        print(
+            "Faculty number",
+            os.path.basename(os.getcwd()),
+            "having no cpp files after unzip",
+        )
         shutil.rmtree(os.getcwd())
         return -1
 
@@ -59,7 +63,10 @@ def remove_zipped_dir(faculty_number):
             return
         all_student_homeworks = list()
         for (student_root, student_dirs, student_homeworks) in os.walk(os.getcwd()):
-            all_student_homeworks += [os.path.join(student_root, student_homework) for student_homework in student_homeworks]
+            all_student_homeworks += [
+                os.path.join(student_root, student_homework)
+                for student_homework in student_homeworks
+            ]
         for student_homework in all_student_homeworks:
             if move_student_homework(student_homework) == -1:
                 return
@@ -88,7 +95,11 @@ def create_student_dirs():
                 try:
                     hw_zip_obj.extractall(".")
                 except FileExistsError:
-                    print("Faculty number", faculty_number, " tried to recreate dir, probably zip in zip submitted. Won't be tested!")
+                    print(
+                        "Faculty number",
+                        faculty_number,
+                        " tried to recreate dir, probably zip in zip submitted. Won't be tested!",
+                    )
                     os.chdir("..")
                     shutil.rmtree(faculty_number)
                     continue
@@ -97,7 +108,11 @@ def create_student_dirs():
             remove_zipped_dir(faculty_number)
             os.chdir("..")
         else:
-            print("File", os.path.basename(homework_path), "is not a zip file and student wont have his homework tested")
+            print(
+                "File",
+                os.path.basename(homework_path),
+                "is not a zip file and student wont have his homework tested",
+            )
             os.unlink(homework_path)
 
 
@@ -108,7 +123,9 @@ def remove_moodle_dirs():
 
 def check_for_system_calls(file_to_compile):
     try:
-        with open(file_to_compile, encoding="utf-8-sig") as file_to_compile_fd:  # Using utf-8-sig since some code is written on windows and it may contain characters like <feff>
+        with open(
+            file_to_compile, encoding="utf-8-sig"
+        ) as file_to_compile_fd:  # Using utf-8-sig since some code is written on windows and it may contain characters like <feff>
             for line in file_to_compile_fd:
                 if re.search("system\(", line):
                     return 2
@@ -119,7 +136,9 @@ def check_for_system_calls(file_to_compile):
 
 def add_all_libs(original_file):
     # The following function is needed for compiling VS C++ code, since the libraries in VS contain more functions that g++
-    with open(original_file, encoding="utf-8-sig") as original_file_d:  # Using utf-8-sig since some code is written on windows and it may contain characters like <feff>
+    with open(
+        original_file, encoding="utf-8-sig"
+    ) as original_file_d:  # Using utf-8-sig since some code is written on windows and it may contain characters like <feff>
         original_content = original_file_d.read()
         new_file = original_file + "~"
         with open(new_file, "w+") as new_file_d:
@@ -131,7 +150,6 @@ def add_all_libs(original_file):
 
 
 def compile_homeworks():
-    # Compile each file with g++
     for (root, dirs, files) in os.walk(os.getcwd()):
         for file in files:
             if file.endswith(".cpp"):
@@ -139,17 +157,21 @@ def compile_homeworks():
                 invalid = check_for_system_calls(file_to_compile)
                 if invalid > 0:
                     if invalid == 1:
-                        print("File", os.path.basename(file_to_compile), "cannot be opened for reading in utf-8-signed and won't be compiled")
+                        print(
+                            f"File {os.path.basename(file_to_compile)} cannot be opened for reading in utf-8-signed and won't be compiled"
+                        )
                     else:
-                        print("File", os.path.basename(file_to_compile), "contails system() calls and won't be compiled")
+                        print(
+                            f"File {os.path.basename(file_to_compile)} contains system() calls and won't be compiled"
+                        )
                     continue
                 if re.search("vc", file, re.IGNORECASE):
                     add_all_libs(file_to_compile)
                 file_to_produce = os.path.join(root, file.replace(".cpp", ".exe"))
-                command = "g++ '" + file_to_compile + "' -o '" + file_to_produce + "' 2> /dev/null || exit 1"
+                command = f"g++ '{file_to_compile}' -o '{file_to_produce}' 2> /dev/null || exit 1"
 
-                if os.system(command) != 0:
-                    print("File", os.path.basename(file_to_compile), "failed to compile")
+                if os.system(command):
+                    print(f"File {os.path.basename(file_to_compile)} failed to compile")
 
 
 def main():
