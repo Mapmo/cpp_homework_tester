@@ -1,20 +1,9 @@
-#!/usr/bin/env python3
-
+import argparse
 import json
 import sys
 
 from libs import tools_functions
 from termcolor import colored
-
-false_option = "--false"
-
-
-def check_for_false_option():
-    if false_option in sys.argv:
-        sys.argv.remove(false_option)
-        return True
-    return False
-
 
 def remove_successful_tests():
     for student in results:
@@ -26,28 +15,27 @@ def remove_successful_tests():
                     del task["tests"][test - 1]
 
 
-false_option_set = check_for_false_option()
-argc = len(sys.argv)
-if argc < 2 or argc > 5:
-    print("Usage:")
-    print("\t" + sys.argv[0], "JSON_FILE [[[FN] [TASK_ID] [TEST_ID]]]")
-    print("\t\t" + false_option, "- prints only the tests that appear to have failed the testing\n")
-    exit(1)
 
+parser = argparse.ArgumentParser(description='Process some integers.')
+parser.add_argument('--false', action='store_true', help='Display only failed tests')
+parser.add_argument('JSON_FILE', type=str, help='The json file with the results')
+parser.add_argument('FN', type=str, nargs='?', help='Faculty number of the student')
+parser.add_argument('TASK_ID', type=str, nargs='?')
+parser.add_argument('TEST_ID', type=str, nargs='?')
+args = parser.parse_args()
 
 json_file = (sys.argv[1])
 results = tools_functions.parse_json_file(json_file)
 
-if false_option_set:
+if args.false:
     remove_successful_tests()
 
-if argc == 2:
+if not args.FN :
     print(json.dumps(results, indent=4))
     exit(0)
 
-faculty_number = sys.argv[2]
-student_result = tools_functions.extract_student_result(results, faculty_number)
-if argc == 3:
+student_result = tools_functions.extract_student_result(results, args.FN)
+if not args.TASK_ID:
     print("Student", student_result["faculty_number"])
 
     tasks_count = len(student_result["score"])
@@ -68,12 +56,11 @@ if argc == 3:
     print(colored("\t\t Total:\t" + str(total) + " points", 'white'))
     exit(0)
 
-task_id = sys.argv[3]
-student_task = tools_functions.extract_student_task(student_result, task_id)
-if argc == 4:
+
+student_task = tools_functions.extract_student_task(student_result, args.TASK_ID)
+if not args.TEST_ID:
     print(json.dumps(student_task, indent=4))
     exit(0)
 
-test_id = sys.argv[4]
-student_test = tools_functions.extract_student_test(student_task, test_id)
+student_test = tools_functions.extract_student_test(student_task, args.TEST_ID)
 print(json.dumps(student_test, indent=4))

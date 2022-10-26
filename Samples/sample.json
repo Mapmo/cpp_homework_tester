@@ -1,6 +1,6 @@
 [
 	{
-		"faculty_number": 62197,
+		"faculty_number": "62197",
 		"score": [
 			1,
 			1,
@@ -10,17 +10,17 @@
 		],
 		"tasks": [
 			{
-				"id": 1,
+				"id": "1",
 				"tests": [
 					{
-						"id": 1,
+						"id": "1",
 						"input" : "123",
 						"expect_output": "1234",
 						"actual_output": "1234",
 						"match": true
 					},
 					{
-						"id": 2,
+						"id": "2",
 						"expect_output": "1234",
 						"actual_output": "1233",
 						"match": false
@@ -28,17 +28,17 @@
 				]
 			},
 			{
-				"id": 2,
+				"id": "2",
 				"tests": [
 					{
-						"id": 1,
+						"id": "1",
 						"input" : "123",
 						"expect_output": "123",
 						"actual_output": "123",
 						"match": true
 					},
 					{
-						"id": 2,
+						"id": "2",
 						"input" : "123",
 						"expect_output": "5",
 						"actual_output": "1233",
@@ -47,17 +47,17 @@
 				]
 			},
 			{
-				"id": 3,
+				"id": "3",
 				"tests": [
 					{
-						"id": 1,
+						"id": "1",
 						"input" : "123",
 						"expect_output": "1234",
 						"actual_output": "1234",
 						"match": true
 					},
 					{
-						"id": 2,
+						"id": "2",
 						"input" : "123",
 						"expect_output": "1234",
 						"actual_output": "1233",
@@ -66,17 +66,17 @@
 				]
 			},
 			{
-				"id": 4,
+				"id": "4",
 				"tests": [
 					{
-						"id": 1,
+						"id": "1",
 						"input" : "123",
 						"expect_output": "1234",
 						"actual_output": "1234",
 						"match": true
 					},
 					{
-						"id": 2,
+						"id": "2",
 						"input" : "123",
 						"expect_output": "1234",
 						"actual_output": "1233",
@@ -85,17 +85,17 @@
 				]
 			},
 			{
-				"id": 5,
+				"id": "5",
 				"tests": [
 					{
-						"id": 1,
+						"id": "1",
 						"input" : "123",
 						"expect_output": "1234",
 						"actual_output": "124",
 						"match": false
 					},
 					{
-						"id": 2,
+						"id": "2",
 						"input" : "123",
 						"expect_output": "1234",
 						"actual_output": "1233",
