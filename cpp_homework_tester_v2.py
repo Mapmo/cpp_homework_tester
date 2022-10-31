@@ -68,6 +68,7 @@ def test_homeworks(solutions_dir, tests):
     os.chdir(solutions_dir)
     for test_dir in tests:
         task_number = os.path.basename(test_dir)
+        # will have issue with double digits tasks, need better file format!
         student_task_solution = glob.glob(f"*{task_number}.exe")
         student_task_score = 0
         student_task = dict()
@@ -95,7 +96,7 @@ def main():
     parser = argparse.ArgumentParser(description="Test student's homework")
     parser.add_argument("TESTS_DIR", type=str, help="The root directory of the tests")
     parser.add_argument(
-        "SOLUTIONS_DIR", type=str, help="FThe directory with the student's homework"
+        "SOLUTIONS_DIR", type=str, help="The directory with the student's compiled .exe solutions"
     )
     args = parser.parse_args()
 
